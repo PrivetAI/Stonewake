@@ -202,55 +202,67 @@ struct OnboardingView: View {
                            startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                Spacer()
+            // Centers when it fits, scrolls when it doesn't - in landscape the fixed
+            // stack is taller than the screen and used to push the button off-screen.
+            GeometryReader { geo in
+                let compact = geo.size.height < 520
 
-                illustration
-                    .frame(height: 180)
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 0) {
+                        Spacer(minLength: compact ? 14 : 0)
 
-                Text(titles[page])
-                    .font(SSFont.display(30))
-                    .foregroundColor(SS.hex(0x3E3830))
-                    .padding(.top, 26)
+                        illustration
+                            .frame(height: compact ? 108 : 180)
 
-                Text(bodies[page])
-                    .font(SSFont.body(15))
-                    .foregroundColor(SS.hex(0x3E3830).opacity(0.75))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
-                    .padding(.top, 10)
-                    .frame(minHeight: 100, alignment: .top)
+                        Text(titles[page])
+                            .font(SSFont.display(compact ? 24 : 30))
+                            .foregroundColor(SS.hex(0x3E3830))
+                            .padding(.top, compact ? 14 : 26)
 
-                HStack(spacing: 8) {
-                    ForEach(0..<4, id: \.self) { i in
-                        Circle()
-                            .fill(i == page ? SS.hex(0x3E3830) : SS.hex(0x3E3830).opacity(0.25))
-                            .frame(width: 8, height: 8)
-                    }
-                }
-                .padding(.top, 6)
+                        Text(bodies[page])
+                            .font(SSFont.body(15))
+                            .foregroundColor(SS.hex(0x3E3830).opacity(0.75))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 40)
+                            .padding(.top, 10)
+                            .frame(minHeight: compact ? 0 : 100, alignment: .top)
+                            .fixedSize(horizontal: false, vertical: true)
 
-                Spacer()
-
-                VStack(spacing: 10) {
-                    SSPrimaryButton(title: page == 3 ? "To the Shore" : "Next", color: SS.accentWarm) {
-                        if page < 3 {
-                            withAnimation(.easeInOut(duration: 0.25)) { page += 1 }
-                        } else {
-                            finish()
+                        HStack(spacing: 8) {
+                            ForEach(0..<4, id: \.self) { i in
+                                Circle()
+                                    .fill(i == page ? SS.hex(0x3E3830) : SS.hex(0x3E3830).opacity(0.25))
+                                    .frame(width: 8, height: 8)
+                            }
                         }
-                    }
-                    if page < 3 {
-                        Button(action: finish) {
-                            Text("Skip the walk-through")
-                                .font(SSFont.body(13, .medium))
-                                .foregroundColor(SS.hex(0x3E3830).opacity(0.5))
+                        .padding(.top, compact ? 12 : 6)
+
+                        Spacer(minLength: compact ? 16 : 0)
+
+                        VStack(spacing: 10) {
+                            SSPrimaryButton(title: page == 3 ? "To the Shore" : "Next", color: SS.accentWarm) {
+                                if page < 3 {
+                                    withAnimation(.easeInOut(duration: 0.25)) { page += 1 }
+                                } else {
+                                    finish()
+                                }
+                            }
+                            if page < 3 {
+                                Button(action: finish) {
+                                    Text("Skip the walk-through")
+                                        .font(SSFont.body(13, .medium))
+                                        .foregroundColor(SS.hex(0x3E3830).opacity(0.5))
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            }
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .padding(.horizontal, 36)
+                        .padding(.top, compact ? 6 : 0)
+                        .padding(.bottom, compact ? 20 : 40)
                     }
+                    .frame(maxWidth: .infinity)
+                    .frame(minHeight: geo.size.height)
                 }
-                .padding(.horizontal, 36)
-                .padding(.bottom, 40)
             }
         }
     }
