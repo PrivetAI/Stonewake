@@ -64,40 +64,19 @@ struct ShoreCard: View {
 
     private var cardBody: some View {
         ZStack(alignment: .bottomLeading) {
-            // Painterly banner
-            VStack(spacing: 0) {
-                LinearGradient(colors: [palette.skyTop, palette.skyLow],
-                               startPoint: .top, endPoint: .bottom)
-                ZStack {
-                    LinearGradient(colors: [palette.waterTop, palette.waterDeep],
+            // Painterly banner artwork
+            Image(ShoreArt.shore(shore.id))
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(maxWidth: .infinity)
+                .frame(height: 118)
+                .clipped()
+                .overlay(
+                    LinearGradient(colors: [Color.black.opacity(0.05),
+                                            Color.black.opacity(0.0),
+                                            Color.black.opacity(0.52)],
                                    startPoint: .top, endPoint: .bottom)
-                    VStack(spacing: 7) {
-                        WavePathShape(crests: 4, amp: 0.5, yFrac: 0.5)
-                            .stroke(palette.shimmer.opacity(0.5), lineWidth: 1.6)
-                            .frame(height: 5)
-                        WavePathShape(crests: 3, amp: 0.5, yFrac: 0.5)
-                            .stroke(palette.shimmer.opacity(0.3), lineWidth: 1.4)
-                            .frame(height: 5)
-                    }
-                    .padding(.horizontal, 14)
-                }
-                .frame(height: 44)
-            }
-            .frame(height: 118)
-            .overlay(
-                HillBanner(color: palette.hillFar.opacity(0.85), seed: Double(shore.id) * 13)
-                    .frame(height: 40)
-                    .offset(y: -24),
-                alignment: .bottom
-            )
-            .overlay(
-                Circle()
-                    .fill(palette.sun)
-                    .frame(width: 26, height: 26)
-                    .offset(x: -14, y: 14)
-                    .opacity(0.9),
-                alignment: .topTrailing
-            )
+                )
 
             // Text panel
             HStack(alignment: .bottom) {

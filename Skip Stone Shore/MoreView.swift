@@ -253,8 +253,9 @@ struct CodexRow: View {
                 .stroke(SS.accent, style: StrokeStyle(lineWidth: 2.2, lineCap: .round))
         case "flag": FlagIcon(size: 22, color: SS.accent)
         case "stone": StoneMiniIcon(size: 22, body1: SS.hex(0x8B8378), sheen: SS.hex(0xC9C2B4))
-        case "beat": RingTargetIcon(size: 22, color: SS.accent)
-        case "spin": ResetIcon(size: 22, color: SS.accent)
+        case "beat": BeatIcon(size: 22)
+        case "spin": SpinIcon(size: 22)
+        case "throw": ThrowArcIcon(size: 22)
         case "ghost": ZStack {
                 Circle().stroke(SS.inkSoft.opacity(0.5), style: StrokeStyle(lineWidth: 2, dash: [3, 4]))
             }

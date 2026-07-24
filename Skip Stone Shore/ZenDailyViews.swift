@@ -13,10 +13,12 @@ struct ZenView: View {
                 SSScreenHeader(title: "Zen Shore",
                                subtitle: "An endless calm lake. Just you and the water.")
 
-                // Breathing rings visual
+                // Breathing rings over misty-lake artwork
                 ZStack {
-                    LinearGradient(colors: [ShorePalettes.zen.skyTop, ShorePalettes.zen.waterTop],
-                                   startPoint: .top, endPoint: .bottom)
+                    Image(ShoreArt.zen)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .overlay(Color.black.opacity(0.08))
                     ForEach(0..<3, id: \.self) { i in
                         Ellipse()
                             .stroke(Color.white.opacity(0.55 - Double(i) * 0.15), lineWidth: 2)
@@ -87,6 +89,21 @@ struct DailyView: View {
             VStack(spacing: 16) {
                 SSScreenHeader(title: "Daily Throw",
                                subtitle: "One dated lake, three throws. Same for every morning visitor.")
+
+                Image(ShoreArt.daily)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 150)
+                    .clipped()
+                    .overlay(
+                        LinearGradient(colors: [Color.black.opacity(0.05),
+                                                Color.black.opacity(0.0),
+                                                Color.black.opacity(0.32)],
+                                       startPoint: .top, endPoint: .bottom)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .padding(.horizontal, 16)
 
                 SSCard {
                     VStack(alignment: .leading, spacing: 12) {

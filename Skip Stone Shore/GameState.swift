@@ -67,6 +67,7 @@ struct SSPersist: Codable {
     var zenThrows: Int = 0
     var dailyRecords: [DailyRecord] = []
     var dailyStreak: Int = 0
+    var bestDailyStreak: Int = 0
     var lastDailyDate: String = ""
     var selectedStone: String = "river_flat"
     var earnedAchievements: [String] = []
@@ -82,7 +83,7 @@ struct SSPersist: Codable {
     enum CodingKeys: String, CodingKey {
         case levelResults, totalSkips, totalThrows, perfectTaps, stonesSunk,
              ringsTotal, padsTotal, longestThrow, zenBestDistance, zenBestSkips, zenThrows,
-             dailyRecords, dailyStreak, lastDailyDate, selectedStone,
+             dailyRecords, dailyStreak, bestDailyStreak, lastDailyDate, selectedStone,
              earnedAchievements, seenAchievements, onboardingDone, soundOn, hapticsOn,
              leftHanded, ghosts
     }
@@ -102,6 +103,7 @@ struct SSPersist: Codable {
         zenThrows = (try c.decodeIfPresent(Int.self, forKey: .zenThrows)) ?? 0
         dailyRecords = (try c.decodeIfPresent([DailyRecord].self, forKey: .dailyRecords)) ?? []
         dailyStreak = (try c.decodeIfPresent(Int.self, forKey: .dailyStreak)) ?? 0
+        bestDailyStreak = (try c.decodeIfPresent(Int.self, forKey: .bestDailyStreak)) ?? 0
         lastDailyDate = (try c.decodeIfPresent(String.self, forKey: .lastDailyDate)) ?? ""
         selectedStone = (try c.decodeIfPresent(String.self, forKey: .selectedStone)) ?? "river_flat"
         earnedAchievements = (try c.decodeIfPresent([String].self, forKey: .earnedAchievements)) ?? []
@@ -187,7 +189,7 @@ final class GameStore: ObservableObject {
         }
     }
 
-    var bestStreakEver: Int { state.dailyStreak }
+    var bestStreakEver: Int { max(state.bestDailyStreak, state.dailyStreak) }
 
     var unlockedStoneCount: Int {
         StoneData.stones.filter { isStoneUnlocked($0) }.count
@@ -255,6 +257,7 @@ final class GameStore: ObservableObject {
                 state.dailyStreak = 1
             }
             state.lastDailyDate = dateKey
+            state.bestDailyStreak = max(state.bestDailyStreak, state.dailyStreak)
         }
         checkAchievements(throwOutcome: nil)
         save()

@@ -520,3 +520,65 @@ struct FlagIcon: View {
         .frame(width: size, height: size)
     }
 }
+
+// MARK: - Codex-specific icons (distinct from shared generics)
+
+struct ThrowArcIcon: View {
+    let size: CGFloat
+    var color: Color = SS.accent
+    var body: some View {
+        ZStack {
+            Path { p in
+                p.move(to: CGPoint(x: size * 0.14, y: size * 0.82))
+                p.addQuadCurve(to: CGPoint(x: size * 0.9, y: size * 0.6),
+                               control: CGPoint(x: size * 0.52, y: size * 0.04))
+            }
+            .stroke(color, style: StrokeStyle(lineWidth: size * 0.06, lineCap: .round,
+                                              dash: [size * 0.015, size * 0.1]))
+            Ellipse()
+                .fill(color)
+                .frame(width: size * 0.3, height: size * 0.19)
+                .offset(x: -size * 0.34, y: size * 0.3)
+        }
+        .frame(width: size, height: size)
+    }
+}
+
+struct BeatIcon: View {
+    let size: CGFloat
+    var color: Color = SS.accent
+    var body: some View {
+        ZStack {
+            Circle().stroke(color.opacity(0.4), lineWidth: size * 0.06)
+                .frame(width: size * 0.9, height: size * 0.9)
+            Circle().stroke(color, lineWidth: size * 0.07)
+                .frame(width: size * 0.5, height: size * 0.5)
+            Circle().fill(color)
+                .frame(width: size * 0.16, height: size * 0.16)
+        }
+        .frame(width: size, height: size)
+    }
+}
+
+struct SpinIcon: View {
+    let size: CGFloat
+    var color: Color = SS.accent
+    var body: some View {
+        ZStack {
+            ForEach(0..<2, id: \.self) { i in
+                Path { p in
+                    let r = size * (0.34 + Double(i) * 0.11)
+                    p.addArc(center: CGPoint(x: size * 0.5, y: size * 0.5), radius: r,
+                             startAngle: .degrees(18 + Double(i) * 12),
+                             endAngle: .degrees(122 + Double(i) * 12), clockwise: false)
+                }
+                .stroke(color.opacity(0.75 - Double(i) * 0.3),
+                        style: StrokeStyle(lineWidth: size * 0.05, lineCap: .round))
+            }
+            Ellipse()
+                .fill(color)
+                .frame(width: size * 0.5, height: size * 0.32)
+        }
+        .frame(width: size, height: size)
+    }
+}

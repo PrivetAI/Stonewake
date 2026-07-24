@@ -126,6 +126,23 @@ enum ShorePalettes {
     }
 }
 
+// MARK: - Painterly artwork asset names
+
+enum ShoreArt {
+    static func shore(_ index: Int) -> String {
+        switch index {
+        case 0: return "art_dawn"
+        case 1: return "art_willow"
+        case 2: return "art_fjord"
+        case 3: return "art_lagoon"
+        case 4: return "art_sunset"
+        default: return "art_dawn"
+        }
+    }
+    static let zen = "art_zen"
+    static let daily = "art_daily"
+}
+
 // MARK: - Shared UI components
 
 struct SSCard<Content: View>: View {
