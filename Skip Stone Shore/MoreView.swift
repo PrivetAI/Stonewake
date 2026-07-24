@@ -78,6 +78,9 @@ struct MoreView: View {
                                     .stroke(SS.inkSoft, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
                                     .frame(width: 12, height: 12)
                             }
+                            // Without this the Spacer gap is not hit-testable and a
+                            // mid-row tap does nothing.
+                            .contentShape(Rectangle())
                         }
                         .buttonStyle(PlainButtonStyle())
 
@@ -89,6 +92,7 @@ struct MoreView: View {
                                     .foregroundColor(SS.danger)
                                 Spacer()
                             }
+                            .contentShape(Rectangle())
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
@@ -146,6 +150,8 @@ struct MoreView: View {
                 }
                 .animation(.spring(response: 0.25, dampingFraction: 0.8), value: isOn)
             }
+            // Makes the whole row tappable, not just the label and the switch.
+            .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
     }
