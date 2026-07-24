@@ -230,7 +230,7 @@ struct LevelRow: View {
                     HStack(spacing: 8) {
                         featureIcons
                         if let r = result, r.bestDistance > 0 {
-                            Text(String(format: "best %.0f m", r.bestDistance))
+                            Text(String(format: "best %.1f m", r.bestDistance))
                                 .font(SSFont.num(10))
                                 .foregroundColor(SS.inkSoft)
                         }
