@@ -88,6 +88,9 @@ struct RootView: View {
             tabButton(3, "Stones", AnyView(CollectionTabIcon(size: 24, color: tabColor(3))))
             tabButton(4, "More", AnyView(MoreTabIcon(size: 24, color: tabColor(4))))
         }
+        // On iPad the five buttons would spread across the whole bezel; cap and
+        // centre them. The card band behind still runs edge to edge.
+        .ssRegularMaxWidth(SSLayout.tabBarWidth)
         .padding(.top, 8)
         .padding(.bottom, 4)
         .background(
@@ -149,6 +152,7 @@ struct AchievementToastLayer: View {
                         .shadow(color: .black.opacity(0.18), radius: 10, x: 0, y: 4)
                 )
                 .padding(.horizontal, 24)
+                .ssRegularMaxWidth(SSLayout.toastWidth)
                 .padding(.top, 8)
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
@@ -182,6 +186,9 @@ struct AchievementToastLayer: View {
 struct OnboardingView: View {
     @ObservedObject var store: GameStore
     @State private var page = 0
+    @Environment(\.horizontalSizeClass) private var hSize
+
+    private var wide: Bool { hSize == .regular }
 
     private let titles = [
         "Pull Back",
@@ -212,15 +219,19 @@ struct OnboardingView: View {
                         Spacer(minLength: compact ? 14 : 0)
 
                         illustration
-                            .frame(height: compact ? 108 : 180)
+                            // The walk-through art is built from fixed-size
+                            // shapes, so on iPad it has to be scaled, not just
+                            // given a taller box.
+                            .scaleEffect(compact ? 1.0 : (wide ? 1.35 : 1.0))
+                            .frame(height: compact ? 108 : (wide ? 240 : 180))
 
                         Text(titles[page])
-                            .font(SSFont.display(compact ? 24 : 30))
+                            .font(SSFont.display(compact ? 24 : (wide ? 38 : 30)))
                             .foregroundColor(SS.hex(0x3E3830))
                             .padding(.top, compact ? 14 : 26)
 
                         Text(bodies[page])
-                            .font(SSFont.body(15))
+                            .font(SSFont.body(compact ? 15 : (wide ? 17 : 15)))
                             .foregroundColor(SS.hex(0x3E3830).opacity(0.75))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
@@ -260,6 +271,10 @@ struct OnboardingView: View {
                         .padding(.top, compact ? 6 : 0)
                         .padding(.bottom, compact ? 20 : 40)
                     }
+                    // iPad: keep the walk-through a single readable column
+                    // instead of a full-bleed 1366pt line of body copy. The
+                    // scroll wrapper above is untouched.
+                    .ssRegularMaxWidth(560)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: geo.size.height)
                 }

@@ -27,13 +27,14 @@ struct ShoresView: View {
                 }
                 .padding(.horizontal, 22)
 
-                ForEach(ShoreData.shores) { shore in
+                SSAdaptiveGrid(ShoreData.shores, spacing: 14, regularColumns: 2) { shore in
                     ShoreCard(shore: shore, store: store, router: router)
                         .padding(.horizontal, 16)
                 }
 
                 Color.clear.frame(height: 24)
             }
+            .ssRegularMaxWidth(SSLayout.gridWidth)
         }
         .background(SS.paper.ignoresSafeArea())
         .navigationBarHidden(true)
@@ -45,9 +46,13 @@ struct ShoreCard: View {
     @ObservedObject var store: GameStore
     @ObservedObject var router: AppRouter
 
+    @Environment(\.horizontalSizeClass) private var hSize
+
     private var unlocked: Bool { store.shoreUnlocked(shore.id) }
     private var starsHere: Int { store.shoreStars(shore.id) }
     private var palette: ShorePalette { ShorePalettes.forShore(shore.id) }
+    /// Keeps roughly the iPhone banner aspect once the card is a grid cell.
+    private var bannerHeight: CGFloat { hSize == .regular ? 148 : 118 }
 
     var body: some View {
         Group {
@@ -69,7 +74,7 @@ struct ShoreCard: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(maxWidth: .infinity)
-                .frame(height: 118)
+                .frame(height: bannerHeight)
                 .clipped()
                 .overlay(
                     LinearGradient(colors: [Color.black.opacity(0.05),
@@ -178,7 +183,7 @@ struct LevelListView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 8)
 
-                ForEach(ShoreData.levels(for: shore.id)) { level in
+                SSAdaptiveGrid(ShoreData.levels(for: shore.id), spacing: 12, regularColumns: 2) { level in
                     LevelRow(level: level, store: store, palette: palette) {
                         router.play(.level(level.id))
                     }
@@ -187,6 +192,7 @@ struct LevelListView: View {
 
                 Color.clear.frame(height: 24)
             }
+            .ssRegularMaxWidth(SSLayout.gridWidth)
         }
         .background(SS.paper.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)

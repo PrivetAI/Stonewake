@@ -29,6 +29,7 @@ struct CollectionView: View {
                 .padding(.top, 12)
             }
         }
+        .ssRegularMaxWidth(SSLayout.gridWidth)
         .background(SS.paper.ignoresSafeArea())
         .navigationBarHidden(true)
     }
@@ -60,7 +61,7 @@ struct StonesSection: View {
                 .font(SSFont.body(13, .semibold))
                 .foregroundColor(SS.inkSoft)
 
-            ForEach(StoneData.stones) { stone in
+            SSAdaptiveGrid(StoneData.stones, spacing: 10, regularColumns: 2) { stone in
                 StoneRow(stone: stone, store: store)
                     .padding(.horizontal, 16)
             }
@@ -177,7 +178,7 @@ struct AchievementsSection: View {
                 .font(SSFont.body(13, .semibold))
                 .foregroundColor(SS.inkSoft)
 
-            ForEach(AchievementData.all) { spec in
+            SSAdaptiveGrid(AchievementData.all, spacing: 10, regularColumns: 2) { spec in
                 let earned = store.state.earnedAchievements.contains(spec.id)
                 HStack(spacing: 13) {
                     ZStack {
@@ -245,6 +246,8 @@ struct StatsSection: View {
             ], title: "The Rituals")
         }
         .padding(.horizontal, 16)
+        // Label/value rows read badly when stretched to a full iPad width.
+        .ssRegularMaxWidth(SSLayout.readingWidth)
     }
 
     private func statCard(rows: [(String, String)], title: String) -> some View {

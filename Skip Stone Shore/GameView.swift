@@ -161,7 +161,11 @@ final class GameVM: ObservableObject {
 
     // MARK: input
 
-    func updateAim(start: CGPoint, current: CGPoint) {
+    /// `powerReference` is the drag length, in points, that means full power.
+    /// 150 on every phone-sized viewport (the shipped value); longer on iPad,
+    /// where 150pt is a much smaller share of the screen and the aim would
+    /// otherwise feel twitchy.
+    func updateAim(start: CGPoint, current: CGPoint, powerReference: Double = 150) {
         guard phase == .playing, engine.phase == .ready else { return }
         var dx = Double(start.x - current.x)
         let sdy = Double(start.y - current.y)
@@ -174,7 +178,7 @@ final class GameVM: ObservableObject {
         }
         var ang = atan2(wy, dx)
         ang = min(max(ang, ThrowEngine.minAngle), ThrowEngine.maxAngle)
-        let pow = min(1.0, len / 150.0)
+        let pow = min(1.0, len / max(1.0, powerReference))
         aim = AimState(isAiming: true, angle: ang, power: pow)
     }
 
@@ -274,6 +278,7 @@ struct GameContainer: View {
     @ObservedObject var store: GameStore
     @StateObject private var vm: GameVM
     @State private var touchDown = false
+    @Environment(\.horizontalSizeClass) private var hSize
 
     init(config: GameConfig, store: GameStore,
          onExit: @escaping () -> Void, onPlayLevel: @escaping (Int) -> Void) {
@@ -301,7 +306,8 @@ struct GameContainer: View {
                         DragGesture(minimumDistance: 0)
                             .onChanged { g in
                                 if vm.engine.phase == .ready {
-                                    vm.updateAim(start: g.startLocation, current: g.location)
+                                    vm.updateAim(start: g.startLocation, current: g.location,
+                                                 powerReference: powerReference(geo.size))
                                 } else if vm.engine.phase == .flying && !touchDown {
                                     touchDown = true
                                     vm.tapBeat()
@@ -314,7 +320,8 @@ struct GameContainer: View {
                     )
                     .allowsHitTesting(vm.phase == .playing)
 
-                GameHUD(vm: vm, onPause: { vm.phase = .paused })
+                GameHUD(vm: vm, scale: GameContainer.hudScale(geo.size),
+                        onPause: { vm.phase = .paused })
 
                 if vm.phase == .throwEnded {
                     if vm.isZen {
@@ -335,6 +342,24 @@ struct GameContainer: View {
         }
         .onAppear { vm.start() }
         .onDisappear { vm.stop() }
+    }
+
+    /// Full-power drag length. The `max(150, ...)` floor means every phone -
+    /// including a Pro Max in landscape, which also reports regular width -
+    /// keeps the shipped 150pt feel; only genuine iPad viewports stretch it.
+    private func powerReference(_ size: CGSize) -> Double {
+        guard hSize == .regular else { return 150 }
+        return max(150, Double(min(size.width, size.height)) * 0.28)
+    }
+
+    /// HUD chrome scale. Deliberately keyed off the viewport, not the size
+    /// class, so it matches `LakeSceneView.uiScale` exactly: every phone
+    /// (short side well under 500pt, in either orientation) stays at 1.0 and
+    /// only true iPad viewports grow the 40pt buttons and 11-21pt type.
+    static func hudScale(_ size: CGSize) -> CGFloat {
+        let shortSide = min(size.width, size.height)
+        guard shortSide >= 500 else { return 1.0 }
+        return min(1.45, max(1.15, shortSide / 620))
     }
 
     private func exitGame() {
@@ -361,7 +386,12 @@ extension GameVM {
 
 struct GameHUD: View {
     @ObservedObject var vm: GameVM
+    /// 1.0 on every phone viewport, so the shipped HUD is untouched; a modest
+    /// bump on iPad, where 40pt chrome floats in a 1000pt-tall scene.
+    var scale: CGFloat = 1.0
     let onPause: () -> Void
+
+    private var s: CGFloat { scale }
 
     var body: some View {
         VStack(spacing: 8) {
@@ -372,9 +402,9 @@ struct GameHUD: View {
                             .fill(Color.black.opacity(0.28))
                         PauseIconShape()
                             .fill(Color.white)
-                            .frame(width: 18, height: 18)
+                            .frame(width: 18 * s, height: 18 * s)
                     }
-                    .frame(width: 40, height: 40)
+                    .frame(width: 40 * s, height: 40 * s)
                 }
                 .buttonStyle(PlainButtonStyle())
 
@@ -382,14 +412,14 @@ struct GameHUD: View {
 
                 VStack(spacing: 1) {
                     Text(String(format: "%.1f m", max(0, vm.engine.phase == .ready ? vm.bestDistance : vm.engine.x)))
-                        .font(SSFont.num(21))
+                        .font(SSFont.num(21 * s))
                         .foregroundColor(.white)
                     Text("skips \(vm.engine.phase == .ready ? vm.bestSkips : vm.engine.outcome.skips)")
-                        .font(SSFont.body(12, .semibold))
+                        .font(SSFont.body(12 * s, .semibold))
                         .foregroundColor(.white.opacity(0.8))
                 }
-                .padding(.horizontal, 14)
-                .padding(.vertical, 6)
+                .padding(.horizontal, 14 * s)
+                .padding(.vertical, 6 * s)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .fill(Color.black.opacity(0.28))
@@ -404,35 +434,37 @@ struct GameHUD: View {
                                 .fill(i < vm.outcomes.count
                                       ? Color.white.opacity(0.28)
                                       : Color.white.opacity(0.9))
-                                .frame(width: 14, height: 10)
+                                .frame(width: 14 * s, height: 10 * s)
                         }
                     }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 8)
+                    .padding(.horizontal, 10 * s)
+                    .padding(.vertical, 8 * s)
                     .background(
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
                             .fill(Color.black.opacity(0.28))
                     )
                     if abs(vm.level.windBase) > 0.05 || vm.level.gustPower > 0.05 {
-                        WindChip(vm: vm)
+                        WindChip(vm: vm, scale: s)
                     }
                 }
             }
             .padding(.horizontal, 14)
+            .ssRegularMaxWidth(SSLayout.hudWidth)
 
-            GoalChips(vm: vm)
+            GoalChips(vm: vm, scale: s)
                 .padding(.horizontal, 14)
+                .ssRegularMaxWidth(SSLayout.hudWidth)
 
             Spacer()
 
             if vm.phase == .playing {
                 Text(hintText)
-                    .font(SSFont.body(13, .semibold))
+                    .font(SSFont.body(13 * s, .semibold))
                     .foregroundColor(.white.opacity(0.85))
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 7)
+                    .padding(.horizontal, 14 * s)
+                    .padding(.vertical, 7 * s)
                     .background(Capsule().fill(Color.black.opacity(0.25)))
-                    .padding(.bottom, 18)
+                    .padding(.bottom, 18 * s)
                     .opacity(vm.engine.phase == .ready ? 1 : (vm.engine.timingRingProgress != nil ? 1 : 0))
                     .animation(.easeInOut(duration: 0.2), value: vm.engine.phase == .ready)
             }
@@ -452,46 +484,52 @@ struct GameHUD: View {
 
 struct WindChip: View {
     @ObservedObject var vm: GameVM
+    var scale: CGFloat = 1.0
+    private var s: CGFloat { scale }
+
     var body: some View {
         let wind = vm.engine.windAt(vm.engine.time)
         HStack(spacing: 5) {
             WindIconShape()
                 .stroke(Color.white, style: StrokeStyle(lineWidth: 1.6, lineCap: .round, lineJoin: .round))
-                .frame(width: 14, height: 14)
+                .frame(width: 14 * s, height: 14 * s)
                 .scaleEffect(x: wind >= 0 ? 1 : -1)
             Text(String(format: "%@%.1f", wind >= 0 ? "+" : "", wind))
-                .font(SSFont.num(11))
+                .font(SSFont.num(11 * s))
                 .foregroundColor(.white)
         }
-        .padding(.horizontal, 9)
-        .padding(.vertical, 5)
+        .padding(.horizontal, 9 * s)
+        .padding(.vertical, 5 * s)
         .background(Capsule().fill(Color.black.opacity(0.28)))
     }
 }
 
 struct GoalChips: View {
     @ObservedObject var vm: GameVM
+    var scale: CGFloat = 1.0
+    private var s: CGFloat { scale }
+
     var body: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 6 * s) {
             ForEach(0..<min(3, vm.level.goals.count), id: \.self) { i in
                 let met = vm.goalNowMet[i]
                 HStack(spacing: 5) {
                     if met {
                         CheckShape()
                             .stroke(SS.gold, style: StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
-                            .frame(width: 11, height: 11)
+                            .frame(width: 11 * s, height: 11 * s)
                     } else {
                         StarShape()
                             .stroke(Color.white.opacity(0.7), lineWidth: 1.4)
-                            .frame(width: 11, height: 11)
+                            .frame(width: 11 * s, height: 11 * s)
                     }
                     Text(shortGoal(vm.level.goals[i]))
-                        .font(SSFont.body(11, .semibold))
+                        .font(SSFont.body(11 * s, .semibold))
                         .foregroundColor(met ? SS.gold : .white.opacity(0.85))
                         .lineLimit(1)
                 }
-                .padding(.horizontal, 8)
-                .padding(.vertical, 5)
+                .padding(.horizontal, 8 * s)
+                .padding(.vertical, 5 * s)
                 .background(Capsule().fill(Color.black.opacity(met ? 0.38 : 0.22)))
             }
             Spacer()
@@ -514,12 +552,14 @@ struct GoalChips: View {
 
 struct OverlayScrim<Content: View>: View {
     @ViewBuilder var content: Content
+    @Environment(\.horizontalSizeClass) private var hSize
+
     var body: some View {
         ZStack {
             Color.black.opacity(0.45).ignoresSafeArea()
             content
                 .padding(22)
-                .frame(maxWidth: 420)
+                .frame(maxWidth: hSize == .regular ? SSLayout.overlayWidth : 420)
                 .background(
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
                         .fill(SS.paper)

@@ -26,13 +26,12 @@ struct MoreView: View {
                     }
                 }
                 .padding(.horizontal, 16)
+                .ssRegularMaxWidth(SSLayout.readingWidth)
 
-                VStack(spacing: 10) {
-                    ForEach(CodexData.entries) { entry in
-                        CodexRow(entry: entry)
-                    }
+                SSAdaptiveGrid(CodexData.entries, spacing: 10, regularColumns: 2) { entry in
+                    CodexRow(entry: entry)
+                        .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 16)
 
                 // Settings
                 SSCard {
@@ -98,6 +97,7 @@ struct MoreView: View {
                     }
                 }
                 .padding(.horizontal, 16)
+                .ssRegularMaxWidth(SSLayout.readingWidth)
 
                 Text("Skip Stone Shore 1.0")
                     .font(SSFont.body(11, .medium))
@@ -106,6 +106,7 @@ struct MoreView: View {
 
                 Color.clear.frame(height: 24)
             }
+            .ssRegularMaxWidth(SSLayout.gridWidth)
         }
         .background(SS.paper.ignoresSafeArea())
         .navigationBarHidden(true)

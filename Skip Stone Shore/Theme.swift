@@ -143,6 +143,89 @@ enum ShoreArt {
     static let daily = "art_daily"
 }
 
+// MARK: - Adaptive layout (iPhone + iPad)
+
+/// Content widths used once the horizontal size class turns `.regular`
+/// (an iPad in either orientation). Every value is a *cap*: the content is
+/// centred inside the full-width screen instead of being stretched, which is
+/// what keeps a 13-inch iPad from looking like a blown-up phone.
+enum SSLayout {
+    /// Prose and settings - a single readable column.
+    static let readingWidth: CGFloat = 720
+    /// Multi-column runs of cards (shores, levels, stones, honors, codex).
+    static let gridWidth: CGFloat = 920
+    /// The custom HStack tab bar.
+    static let tabBarWidth: CGFloat = 640
+    /// The in-game HUD row, so the corner clusters do not drift to the bezels.
+    static let hudWidth: CGFloat = 760
+    /// Modal cards over the lake.
+    static let overlayWidth: CGFloat = 520
+    /// Toast banners.
+    static let toastWidth: CGFloat = 520
+}
+
+/// Caps and centres a view on regular width. On compact width it returns the
+/// view completely untouched, so the shipped iPhone layout is unchanged.
+private struct SSRegularMaxWidth: ViewModifier {
+    let width: CGFloat
+    @Environment(\.horizontalSizeClass) private var hSize
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if hSize == .regular {
+            content
+                .frame(maxWidth: width)
+                .frame(maxWidth: .infinity)
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+    /// No-op on iPhone; on iPad caps the width and centres.
+    func ssRegularMaxWidth(_ width: CGFloat) -> some View {
+        modifier(SSRegularMaxWidth(width: width))
+    }
+}
+
+/// A vertical run of cards on iPhone, the same cards spread over
+/// `regularColumns` columns on iPad. On compact width the body is exactly the
+/// `VStack(spacing:) { ForEach }` it replaces, so nothing about the iPhone
+/// layout moves.
+struct SSAdaptiveGrid<Item: Identifiable, Content: View>: View {
+    private let items: [Item]
+    private let spacing: CGFloat
+    private let regularColumns: Int
+    private let content: (Item) -> Content
+
+    @Environment(\.horizontalSizeClass) private var hSize
+
+    init(_ items: [Item], spacing: CGFloat, regularColumns: Int = 2,
+         @ViewBuilder content: @escaping (Item) -> Content) {
+        self.items = items
+        self.spacing = spacing
+        self.regularColumns = regularColumns
+        self.content = content
+    }
+
+    var body: some View {
+        if hSize == .regular && regularColumns > 1 {
+            // Cells carry their own horizontal padding (as they do on iPhone),
+            // so grid spacing stays 0 and the gutter comes from that padding.
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0, alignment: .top),
+                                     count: regularColumns),
+                      spacing: spacing) {
+                ForEach(items) { item in content(item) }
+            }
+        } else {
+            VStack(spacing: spacing) {
+                ForEach(items) { item in content(item) }
+            }
+        }
+    }
+}
+
 // MARK: - Shared UI components
 
 struct SSCard<Content: View>: View {

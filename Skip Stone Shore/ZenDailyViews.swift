@@ -6,6 +6,7 @@ struct ZenView: View {
     @ObservedObject var store: GameStore
     @ObservedObject var router: AppRouter
     @State private var breathe = false
+    @Environment(\.horizontalSizeClass) private var hSize
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -31,7 +32,7 @@ struct ZenView: View {
                         .fill(SS.hex(0x7C7468))
                         .frame(width: 40, height: 27)
                 }
-                .frame(height: 170)
+                .frame(height: hSize == .regular ? 230 : 170)
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .padding(.horizontal, 16)
                 .onAppear { breathe = true }
@@ -64,6 +65,7 @@ struct ZenView: View {
 
                 Color.clear.frame(height: 24)
             }
+            .ssRegularMaxWidth(SSLayout.readingWidth)
         }
         .background(SS.paper.ignoresSafeArea())
         .navigationBarHidden(true)
@@ -75,6 +77,7 @@ struct ZenView: View {
 struct DailyView: View {
     @ObservedObject var store: GameStore
     @ObservedObject var router: AppRouter
+    @Environment(\.horizontalSizeClass) private var hSize
 
     private var todayKey: String { SSDaily.dateKey() }
     private var playedToday: Bool { store.playedDaily(todayKey) }
@@ -94,7 +97,7 @@ struct DailyView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 150)
+                    .frame(height: hSize == .regular ? 210 : 150)
                     .clipped()
                     .overlay(
                         LinearGradient(colors: [Color.black.opacity(0.05),
@@ -194,6 +197,7 @@ struct DailyView: View {
 
                 Color.clear.frame(height: 24)
             }
+            .ssRegularMaxWidth(SSLayout.readingWidth)
         }
         .background(SS.paper.ignoresSafeArea())
         .navigationBarHidden(true)
