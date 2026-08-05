@@ -1,7 +1,7 @@
 import SwiftUI
 import WebKit
 
-struct SkipStoneWebPanel: UIViewRepresentable {
+struct StonewakeWebPanel: UIViewRepresentable {
     let urlString: String
 
     func makeUIView(context: Context) -> WKWebView {

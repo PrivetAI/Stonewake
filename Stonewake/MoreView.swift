@@ -8,39 +8,39 @@ struct MoreView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 14) {
-                SSScreenHeader(title: "The Boathouse",
+                SWScreenHeader(title: "The Boathouse",
                                subtitle: "Field notes, preferences, quiet corners.")
 
                 // Codex
-                SSCard {
+                SWCard {
                     VStack(alignment: .leading, spacing: 4) {
                         HStack(spacing: 10) {
-                            BookIcon(size: 22, color: SS.accent)
+                            BookIcon(size: 22, color: SW.accent)
                             Text("Shore Codex")
-                                .font(SSFont.display(17))
-                                .foregroundColor(SS.ink)
+                                .font(SWFont.display(17))
+                                .foregroundColor(SW.ink)
                         }
                         Text("What the water throws at you, and how to answer.")
-                            .font(SSFont.body(12))
-                            .foregroundColor(SS.inkSoft)
+                            .font(SWFont.body(12))
+                            .foregroundColor(SW.inkSoft)
                     }
                 }
                 .padding(.horizontal, 16)
-                .ssRegularMaxWidth(SSLayout.readingWidth)
+                .ssRegularMaxWidth(SWLayout.readingWidth)
 
-                SSAdaptiveGrid(CodexData.entries, spacing: 10, regularColumns: 2) { entry in
+                SWAdaptiveGrid(CodexData.entries, spacing: 10, regularColumns: 2) { entry in
                     CodexRow(entry: entry)
                         .padding(.horizontal, 16)
                 }
 
                 // Settings
-                SSCard {
+                SWCard {
                     VStack(alignment: .leading, spacing: 14) {
                         Text("Settings")
-                            .font(SSFont.display(17))
-                            .foregroundColor(SS.ink)
+                            .font(SWFont.display(17))
+                            .foregroundColor(SW.ink)
 
-                        settingToggle(icon: AnyView(SpeakerIcon(size: 20, color: SS.accent)),
+                        settingToggle(icon: AnyView(SpeakerIcon(size: 20, color: SW.accent)),
                                       label: "Sound",
                                       detail: "Plinks, plunks and chimes",
                                       isOn: store.state.soundOn) {
@@ -48,7 +48,7 @@ struct MoreView: View {
                             SoundBox.shared.enabled = store.state.soundOn
                             store.save()
                         }
-                        settingToggle(icon: AnyView(HapticIcon(size: 20, color: SS.accent)),
+                        settingToggle(icon: AnyView(HapticIcon(size: 20, color: SW.accent)),
                                       label: "Haptics",
                                       detail: "Feel each skip in your palm",
                                       isOn: store.state.hapticsOn) {
@@ -56,7 +56,7 @@ struct MoreView: View {
                             HapticBox.shared.enabled = store.state.hapticsOn
                             store.save()
                         }
-                        settingToggle(icon: AnyView(HandDragIcon(size: 20, color: SS.accent)),
+                        settingToggle(icon: AnyView(HandDragIcon(size: 20, color: SW.accent)),
                                       label: "Left-handed throws",
                                       detail: "Pull down-right instead of down-left",
                                       isOn: store.state.leftHanded) {
@@ -64,17 +64,17 @@ struct MoreView: View {
                             store.save()
                         }
 
-                        Rectangle().fill(SS.cardEdge).frame(height: 1)
+                        Rectangle().fill(SW.cardEdge).frame(height: 1)
 
                         Button(action: { showPrivacy = true }) {
                             HStack(spacing: 11) {
-                                ShieldIcon(size: 20, color: SS.accent)
+                                ShieldIcon(size: 20, color: SW.accent)
                                 Text("Privacy Policy")
-                                    .font(SSFont.body(14, .semibold))
-                                    .foregroundColor(SS.ink)
+                                    .font(SWFont.body(14, .semibold))
+                                    .foregroundColor(SW.ink)
                                 Spacer()
                                 ChevronShape()
-                                    .stroke(SS.inkSoft, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                                    .stroke(SW.inkSoft, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
                                     .frame(width: 12, height: 12)
                             }
                             // Without this the Spacer gap is not hit-testable and a
@@ -85,10 +85,10 @@ struct MoreView: View {
 
                         Button(action: { showResetConfirm = true }) {
                             HStack(spacing: 11) {
-                                ResetIcon(size: 20, color: SS.danger)
+                                ResetIcon(size: 20, color: SW.danger)
                                 Text("Reset all progress")
-                                    .font(SSFont.body(14, .semibold))
-                                    .foregroundColor(SS.danger)
+                                    .font(SWFont.body(14, .semibold))
+                                    .foregroundColor(SW.danger)
                                 Spacer()
                             }
                             .contentShape(Rectangle())
@@ -97,21 +97,21 @@ struct MoreView: View {
                     }
                 }
                 .padding(.horizontal, 16)
-                .ssRegularMaxWidth(SSLayout.readingWidth)
+                .ssRegularMaxWidth(SWLayout.readingWidth)
 
-                Text("Skip Stone Shore 1.0")
-                    .font(SSFont.body(11, .medium))
-                    .foregroundColor(SS.inkSoft.opacity(0.7))
+                Text("Stonewake 1.0")
+                    .font(SWFont.body(11, .medium))
+                    .foregroundColor(SW.inkSoft.opacity(0.7))
                     .padding(.top, 4)
 
                 Color.clear.frame(height: 24)
             }
-            .ssRegularMaxWidth(SSLayout.gridWidth)
+            .ssRegularMaxWidth(SWLayout.gridWidth)
         }
-        .background(SS.paper.ignoresSafeArea())
+        .background(SW.paper.ignoresSafeArea())
         .navigationBarHidden(true)
         .sheet(isPresented: $showPrivacy) {
-            SkipStoneWebPanel(urlString: "https://example.com")
+            StonewakeWebPanel(urlString: "https://example.com")
         }
         .alert(isPresented: $showResetConfirm) {
             Alert(
@@ -132,16 +132,16 @@ struct MoreView: View {
                 icon
                 VStack(alignment: .leading, spacing: 1) {
                     Text(label)
-                        .font(SSFont.body(14, .semibold))
-                        .foregroundColor(SS.ink)
+                        .font(SWFont.body(14, .semibold))
+                        .foregroundColor(SW.ink)
                     Text(detail)
-                        .font(SSFont.body(11))
-                        .foregroundColor(SS.inkSoft)
+                        .font(SWFont.body(11))
+                        .foregroundColor(SW.inkSoft)
                 }
                 Spacer()
                 ZStack(alignment: isOn ? .trailing : .leading) {
                     Capsule()
-                        .fill(isOn ? SS.accent : SS.cardEdge)
+                        .fill(isOn ? SW.accent : SW.cardEdge)
                         .frame(width: 46, height: 27)
                     Circle()
                         .fill(Color.white)
@@ -221,27 +221,27 @@ struct CodexRow: View {
                     codexIcon
                         .frame(width: 26, height: 26)
                     Text(entry.title)
-                        .font(SSFont.body(14, .bold))
-                        .foregroundColor(SS.ink)
+                        .font(SWFont.body(14, .bold))
+                        .foregroundColor(SW.ink)
                     Spacer()
                     ChevronShape()
-                        .stroke(SS.inkSoft, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                        .stroke(SW.inkSoft, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
                         .frame(width: 11, height: 11)
                         .rotationEffect(.degrees(open ? 90 : 0))
                 }
                 if open {
                     Text(entry.text)
-                        .font(SSFont.body(13))
-                        .foregroundColor(SS.inkSoft)
+                        .font(SWFont.body(13))
+                        .foregroundColor(SW.inkSoft)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .padding(13)
             .background(
                 RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .fill(SS.card)
+                    .fill(SW.card)
                     .overlay(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .stroke(SS.cardEdge, lineWidth: 1))
+                        .stroke(SW.cardEdge, lineWidth: 1))
             )
         }
         .buttonStyle(PlainButtonStyle())
@@ -255,18 +255,18 @@ struct CodexRow: View {
         case "buoy": BuoyIcon(size: 22)
         case "wood": DriftwoodIcon(size: 22)
         case "wind": WindIconShape()
-                .stroke(SS.accent, style: StrokeStyle(lineWidth: 1.8, lineCap: .round, lineJoin: .round))
+                .stroke(SW.accent, style: StrokeStyle(lineWidth: 1.8, lineCap: .round, lineJoin: .round))
         case "wave": WavePathShape(crests: 2, amp: 0.22, yFrac: 0.5)
-                .stroke(SS.accent, style: StrokeStyle(lineWidth: 2.2, lineCap: .round))
-        case "flag": FlagIcon(size: 22, color: SS.accent)
-        case "stone": StoneMiniIcon(size: 22, body1: SS.hex(0x8B8378), sheen: SS.hex(0xC9C2B4))
+                .stroke(SW.accent, style: StrokeStyle(lineWidth: 2.2, lineCap: .round))
+        case "flag": FlagIcon(size: 22, color: SW.accent)
+        case "stone": StoneMiniIcon(size: 22, body1: SW.hex(0x8B8378), sheen: SW.hex(0xC9C2B4))
         case "beat": BeatIcon(size: 22)
         case "spin": SpinIcon(size: 22)
         case "throw": ThrowArcIcon(size: 22)
         case "ghost": ZStack {
-                Circle().stroke(SS.inkSoft.opacity(0.5), style: StrokeStyle(lineWidth: 2, dash: [3, 4]))
+                Circle().stroke(SW.inkSoft.opacity(0.5), style: StrokeStyle(lineWidth: 2, dash: [3, 4]))
             }
-        default: HandDragIcon(size: 22, color: SS.accent)
+        default: HandDragIcon(size: 22, color: SW.accent)
         }
     }
 }

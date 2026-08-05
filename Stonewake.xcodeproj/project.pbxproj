@@ -12,7 +12,7 @@
 		36F9FBEFB8661DC7F5C39AEF /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E4DA8986092A2380B37905 /* GameView.swift */; };
 		383ACD9194AA55C5F37991FB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E070925E671DC0B059FA6ABB /* Theme.swift */; };
 		493BECE40C5C796C8DEB542F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F92BD10D57DD98E06B3AFFF /* Models.swift */; };
-		4EEE2F33A59C7D40411755C5 /* SkipStoneShoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7B70279203B22D75FE6ADB /* SkipStoneShoreApp.swift */; };
+		4EEE2F33A59C7D40411755C5 /* StonewakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7B70279203B22D75FE6ADB /* StonewakeApp.swift */; };
 		63F565610627D7300DA187AA /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228B6B3348B1E6BF62CFBA11 /* GameState.swift */; };
 		64AA63F347B7DB92C7279643 /* MoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5AD15A6BB56637B207ED01 /* MoreView.swift */; };
 		7696E24848631300FDA64BCD /* SceneRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F928EC8C3361B543DF7F5B81 /* SceneRenderer.swift */; };
@@ -20,8 +20,8 @@
 		8F57BB71D2C0C97CCBC6FEE2 /* ZenDailyViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79B813C4A9BE0A350208B39 /* ZenDailyViews.swift */; };
 		90EE72A7DD616D5E528232F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 697D2383D3DFCC06A5E1E966 /* Assets.xcassets */; };
 		985F1104D7348ED2C2BC5C5A /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB83155CED815C1EFD13BA0 /* CollectionView.swift */; };
-		9B04ADBADB50ACC69A7786AD /* SkipStoneLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA5E57BDC4D71775783044E /* SkipStoneLoadingScreen.swift */; };
-		B23901D9ED0701EE7CC19EED /* SkipStoneWebPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5638393584C003B042103FF4 /* SkipStoneWebPanel.swift */; };
+		9B04ADBADB50ACC69A7786AD /* StonewakeLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA5E57BDC4D71775783044E /* StonewakeLoadingScreen.swift */; };
+		B23901D9ED0701EE7CC19EED /* StonewakeWebPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5638393584C003B042103FF4 /* StonewakeWebPanel.swift */; };
 		D35DFF845DE91A49F1711520 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3681C2AECE8627E947FFF875 /* RootView.swift */; };
 		D3C016220723FCE8F7097373 /* StoneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF8CBE54BA272013230FDA8 /* StoneData.swift */; };
 		ED59F656C41B76A7EB9ACD3B /* SoundBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5109C9E99F1EC4AFC9210D43 /* SoundBox.swift */; };
@@ -30,15 +30,15 @@
 
 /* Begin PBXFileReference section */
 		05CE89B3C38FA39E1C9E0A5D /* ShoresView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoresView.swift; sourceTree = "<group>"; };
-		1FA5E57BDC4D71775783044E /* SkipStoneLoadingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipStoneLoadingScreen.swift; sourceTree = "<group>"; };
+		1FA5E57BDC4D71775783044E /* StonewakeLoadingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StonewakeLoadingScreen.swift; sourceTree = "<group>"; };
 		228B6B3348B1E6BF62CFBA11 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
-		2E7B70279203B22D75FE6ADB /* SkipStoneShoreApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipStoneShoreApp.swift; sourceTree = "<group>"; };
+		2E7B70279203B22D75FE6ADB /* StonewakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StonewakeApp.swift; sourceTree = "<group>"; };
 		3681C2AECE8627E947FFF875 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		5109C9E99F1EC4AFC9210D43 /* SoundBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundBox.swift; sourceTree = "<group>"; };
 		51F4EAB0C6EF509B2C51F553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		5638393584C003B042103FF4 /* SkipStoneWebPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipStoneWebPanel.swift; sourceTree = "<group>"; };
+		5638393584C003B042103FF4 /* StonewakeWebPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StonewakeWebPanel.swift; sourceTree = "<group>"; };
 		59E4DA8986092A2380B37905 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
-		5BC0ABAF52CF439D5EA957DF /* Skip Stone Shore.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Skip Stone Shore.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BC0ABAF52CF439D5EA957DF /* Stonewake.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Stonewake.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		697D2383D3DFCC06A5E1E966 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7D5AD15A6BB56637B207ED01 /* MoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreView.swift; sourceTree = "<group>"; };
 		8F92BD10D57DD98E06B3AFFF /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -56,12 +56,12 @@
 		2C77B7538D6D4E6F80EBFD86 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5BC0ABAF52CF439D5EA957DF /* Skip Stone Shore.app */,
+				5BC0ABAF52CF439D5EA957DF /* Stonewake.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4541127D82FFBD0C3ED83247 /* Skip Stone Shore */ = {
+		4541127D82FFBD0C3ED83247 /* Stonewake */ = {
 			isa = PBXGroup;
 			children = (
 				697D2383D3DFCC06A5E1E966 /* Assets.xcassets */,
@@ -76,22 +76,22 @@
 				3681C2AECE8627E947FFF875 /* RootView.swift */,
 				F928EC8C3361B543DF7F5B81 /* SceneRenderer.swift */,
 				05CE89B3C38FA39E1C9E0A5D /* ShoresView.swift */,
-				1FA5E57BDC4D71775783044E /* SkipStoneLoadingScreen.swift */,
-				2E7B70279203B22D75FE6ADB /* SkipStoneShoreApp.swift */,
-				5638393584C003B042103FF4 /* SkipStoneWebPanel.swift */,
+				1FA5E57BDC4D71775783044E /* StonewakeLoadingScreen.swift */,
+				2E7B70279203B22D75FE6ADB /* StonewakeApp.swift */,
+				5638393584C003B042103FF4 /* StonewakeWebPanel.swift */,
 				5109C9E99F1EC4AFC9210D43 /* SoundBox.swift */,
 				CBF8CBE54BA272013230FDA8 /* StoneData.swift */,
 				E070925E671DC0B059FA6ABB /* Theme.swift */,
 				A11B9F5746C12EA84958BAC9 /* ThrowEngine.swift */,
 				C79B813C4A9BE0A350208B39 /* ZenDailyViews.swift */,
 			);
-			path = "Skip Stone Shore";
+			path = "Stonewake";
 			sourceTree = "<group>";
 		};
 		6E25769E670906CF7C35A7C4 = {
 			isa = PBXGroup;
 			children = (
-				4541127D82FFBD0C3ED83247 /* Skip Stone Shore */,
+				4541127D82FFBD0C3ED83247 /* Stonewake */,
 				2C77B7538D6D4E6F80EBFD86 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -99,9 +99,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C4AB119A94FF37EC8E7ABB11 /* Skip Stone Shore */ = {
+		C4AB119A94FF37EC8E7ABB11 /* Stonewake */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9BA44331EECEF89877E29D55 /* Build configuration list for PBXNativeTarget "Skip Stone Shore" */;
+			buildConfigurationList = 9BA44331EECEF89877E29D55 /* Build configuration list for PBXNativeTarget "Stonewake" */;
 			buildPhases = (
 				406516354AEC7F35397D9A3A /* Sources */,
 				247C5E559B73086AC194C054 /* Resources */,
@@ -110,11 +110,11 @@
 			);
 			dependencies = (
 			);
-			name = "Skip Stone Shore";
+			name = "Stonewake";
 			packageProductDependencies = (
 			);
-			productName = "Skip Stone Shore";
-			productReference = 5BC0ABAF52CF439D5EA957DF /* Skip Stone Shore.app */;
+			productName = "Stonewake";
+			productReference = 5BC0ABAF52CF439D5EA957DF /* Stonewake.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -132,7 +132,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C91B033EEA2DD2AEB3CDA930 /* Build configuration list for PBXProject "Skip Stone Shore" */;
+			buildConfigurationList = C91B033EEA2DD2AEB3CDA930 /* Build configuration list for PBXProject "Stonewake" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -146,7 +146,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C4AB119A94FF37EC8E7ABB11 /* Skip Stone Shore */,
+				C4AB119A94FF37EC8E7ABB11 /* Stonewake */,
 			);
 		};
 /* End PBXProject section */
@@ -177,9 +177,9 @@
 				D35DFF845DE91A49F1711520 /* RootView.swift in Sources */,
 				7696E24848631300FDA64BCD /* SceneRenderer.swift in Sources */,
 				F3ADEEB386ADD294B7279A1A /* ShoresView.swift in Sources */,
-				9B04ADBADB50ACC69A7786AD /* SkipStoneLoadingScreen.swift in Sources */,
-				4EEE2F33A59C7D40411755C5 /* SkipStoneShoreApp.swift in Sources */,
-				B23901D9ED0701EE7CC19EED /* SkipStoneWebPanel.swift in Sources */,
+				9B04ADBADB50ACC69A7786AD /* StonewakeLoadingScreen.swift in Sources */,
+				4EEE2F33A59C7D40411755C5 /* StonewakeApp.swift in Sources */,
+				B23901D9ED0701EE7CC19EED /* StonewakeWebPanel.swift in Sources */,
 				ED59F656C41B76A7EB9ACD3B /* SoundBox.swift in Sources */,
 				D3C016220723FCE8F7097373 /* StoneData.swift in Sources */,
 				383ACD9194AA55C5F37991FB /* Theme.swift in Sources */,
@@ -264,15 +264,15 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Skip Stone Shore/Info.plist";
+				INFOPLIST_FILE = "Stonewake/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.skipstoneshore.app;
-				PRODUCT_NAME = "Skip Stone Shore";
+				PRODUCT_BUNDLE_IDENTIFIER = com.stonewake.app;
+				PRODUCT_NAME = "Stonewake";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -293,15 +293,15 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Skip Stone Shore/Info.plist";
+				INFOPLIST_FILE = "Stonewake/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.skipstoneshore.app;
-				PRODUCT_NAME = "Skip Stone Shore";
+				PRODUCT_BUNDLE_IDENTIFIER = com.stonewake.app;
+				PRODUCT_NAME = "Stonewake";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -371,7 +371,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9BA44331EECEF89877E29D55 /* Build configuration list for PBXNativeTarget "Skip Stone Shore" */ = {
+		9BA44331EECEF89877E29D55 /* Build configuration list for PBXNativeTarget "Stonewake" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				41BBC449806AF53D605D9A79 /* Debug */,
@@ -380,7 +380,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		C91B033EEA2DD2AEB3CDA930 /* Build configuration list for PBXProject "Skip Stone Shore" */ = {
+		C91B033EEA2DD2AEB3CDA930 /* Build configuration list for PBXProject "Stonewake" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				21FF7A843B3471F34651A285 /* Debug */,

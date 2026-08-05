@@ -25,7 +25,7 @@ struct RootView: View {
 
     var body: some View {
         ZStack {
-            SS.paper.ignoresSafeArea()
+            SW.paper.ignoresSafeArea()
 
             VStack(spacing: 0) {
                 Group {
@@ -90,18 +90,18 @@ struct RootView: View {
         }
         // On iPad the five buttons would spread across the whole bezel; cap and
         // centre them. The card band behind still runs edge to edge.
-        .ssRegularMaxWidth(SSLayout.tabBarWidth)
+        .ssRegularMaxWidth(SWLayout.tabBarWidth)
         .padding(.top, 8)
         .padding(.bottom, 4)
         .background(
-            SS.card
-                .overlay(Rectangle().fill(SS.cardEdge).frame(height: 1), alignment: .top)
+            SW.card
+                .overlay(Rectangle().fill(SW.cardEdge).frame(height: 1), alignment: .top)
                 .edgesIgnoringSafeArea(.bottom)
         )
     }
 
     private func tabColor(_ i: Int) -> Color {
-        selectedTab == i ? SS.accent : SS.inkSoft.opacity(0.55)
+        selectedTab == i ? SW.accent : SW.inkSoft.opacity(0.55)
     }
 
     private func tabButton(_ index: Int, _ label: String, _ icon: AnyView) -> some View {
@@ -112,7 +112,7 @@ struct RootView: View {
             VStack(spacing: 3) {
                 icon
                 Text(label)
-                    .font(SSFont.body(10, .semibold))
+                    .font(SWFont.body(10, .semibold))
                     .foregroundColor(tabColor(index))
             }
             .frame(maxWidth: .infinity)
@@ -135,24 +135,24 @@ struct AchievementToastLayer: View {
                     TrophyIcon(size: 30)
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Achievement")
-                            .font(SSFont.body(11, .semibold))
-                            .foregroundColor(SS.goldDeep)
+                            .font(SWFont.body(11, .semibold))
+                            .foregroundColor(SW.goldDeep)
                         Text(spec.name)
-                            .font(SSFont.display(16))
-                            .foregroundColor(SS.ink)
+                            .font(SWFont.display(16))
+                            .foregroundColor(SW.ink)
                     }
                     Spacer()
                 }
                 .padding(14)
                 .background(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(SS.card)
+                        .fill(SW.card)
                         .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(SS.gold.opacity(0.6), lineWidth: 1.5))
+                            .stroke(SW.gold.opacity(0.6), lineWidth: 1.5))
                         .shadow(color: .black.opacity(0.18), radius: 10, x: 0, y: 4)
                 )
                 .padding(.horizontal, 24)
-                .ssRegularMaxWidth(SSLayout.toastWidth)
+                .ssRegularMaxWidth(SWLayout.toastWidth)
                 .padding(.top, 8)
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
@@ -188,7 +188,7 @@ struct OnboardingView: View {
     @State private var page = 0
     @Environment(\.horizontalSizeClass) private var hSize
 
-    private var wide: Bool { hSize == .regular }
+    private var wide: Bool { SWLayout.isRegular(hSize) }
 
     private let titles = [
         "Pull Back",
@@ -205,7 +205,7 @@ struct OnboardingView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(colors: [SS.hex(0xF9D8BC), SS.hex(0xF2AE97), SS.hex(0x8E6B75)],
+            LinearGradient(colors: [SW.hex(0xF9D8BC), SW.hex(0xF2AE97), SW.hex(0x8E6B75)],
                            startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
 
@@ -226,13 +226,13 @@ struct OnboardingView: View {
                             .frame(height: compact ? 108 : (wide ? 240 : 180))
 
                         Text(titles[page])
-                            .font(SSFont.display(compact ? 24 : (wide ? 38 : 30)))
-                            .foregroundColor(SS.hex(0x3E3830))
+                            .font(SWFont.display(compact ? 24 : (wide ? 38 : 30)))
+                            .foregroundColor(SW.hex(0x3E3830))
                             .padding(.top, compact ? 14 : 26)
 
                         Text(bodies[page])
-                            .font(SSFont.body(compact ? 15 : (wide ? 17 : 15)))
-                            .foregroundColor(SS.hex(0x3E3830).opacity(0.75))
+                            .font(SWFont.body(compact ? 15 : (wide ? 17 : 15)))
+                            .foregroundColor(SW.hex(0x3E3830).opacity(0.75))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
                             .padding(.top, 10)
@@ -242,7 +242,7 @@ struct OnboardingView: View {
                         HStack(spacing: 8) {
                             ForEach(0..<4, id: \.self) { i in
                                 Circle()
-                                    .fill(i == page ? SS.hex(0x3E3830) : SS.hex(0x3E3830).opacity(0.25))
+                                    .fill(i == page ? SW.hex(0x3E3830) : SW.hex(0x3E3830).opacity(0.25))
                                     .frame(width: 8, height: 8)
                             }
                         }
@@ -251,7 +251,7 @@ struct OnboardingView: View {
                         Spacer(minLength: compact ? 16 : 0)
 
                         VStack(spacing: 10) {
-                            SSPrimaryButton(title: page == 3 ? "To the Shore" : "Next", color: SS.accentWarm) {
+                            SWPrimaryButton(title: page == 3 ? "To the Shore" : "Next", color: SW.accentWarm) {
                                 if page < 3 {
                                     withAnimation(.easeInOut(duration: 0.25)) { page += 1 }
                                 } else {
@@ -261,8 +261,8 @@ struct OnboardingView: View {
                             if page < 3 {
                                 Button(action: finish) {
                                     Text("Skip the walk-through")
-                                        .font(SSFont.body(13, .medium))
-                                        .foregroundColor(SS.hex(0x3E3830).opacity(0.5))
+                                        .font(SWFont.body(13, .medium))
+                                        .foregroundColor(SW.hex(0x3E3830).opacity(0.5))
                                 }
                                 .buttonStyle(PlainButtonStyle())
                             }
@@ -301,17 +301,17 @@ struct OnboardingView: View {
 struct OnboardDragArt: View {
     var body: some View {
         ZStack {
-            Ellipse().fill(SS.hex(0x7C7468))
+            Ellipse().fill(SW.hex(0x7C7468))
                 .frame(width: 54, height: 36)
                 .offset(x: -50, y: -30)
             Path { p in
                 p.move(to: CGPoint(x: 110, y: 60))
                 p.addQuadCurve(to: CGPoint(x: 175, y: 135), control: CGPoint(x: 128, y: 118))
             }
-            .stroke(SS.hex(0x3E3830).opacity(0.6),
+            .stroke(SW.hex(0x3E3830).opacity(0.6),
                     style: StrokeStyle(lineWidth: 4, lineCap: .round, dash: [1, 10]))
             .frame(width: 240, height: 170)
-            HandDragIcon(size: 62, color: SS.hex(0x3E3830))
+            HandDragIcon(size: 62, color: SW.hex(0x3E3830))
                 .offset(x: 52, y: 50)
         }
     }
@@ -329,10 +329,10 @@ struct OnboardArcArt: View {
                 p.addQuadCurve(to: CGPoint(x: 200, y: 106), control: CGPoint(x: 160, y: 55))
                 p.addQuadCurve(to: CGPoint(x: 250, y: 104), control: CGPoint(x: 226, y: 72))
             }
-            .stroke(SS.hex(0x3E3830).opacity(0.65),
+            .stroke(SW.hex(0x3E3830).opacity(0.65),
                     style: StrokeStyle(lineWidth: 4, lineCap: .round, dash: [1, 11]))
             .frame(width: 260, height: 160)
-            Ellipse().fill(SS.hex(0x7C7468))
+            Ellipse().fill(SW.hex(0x7C7468))
                 .frame(width: 40, height: 27)
                 .offset(x: -55, y: -35)
                 .rotationEffect(.degrees(-14))
@@ -351,12 +351,12 @@ struct OnboardRingArt: View {
                 .stroke(Color.white, lineWidth: 3.4)
                 .frame(width: 46, height: 46)
             Circle()
-                .stroke(SS.gold, lineWidth: 3.4)
+                .stroke(SW.gold, lineWidth: 3.4)
                 .frame(width: 110, height: 110)
                 .scaleEffect(pulse ? 0.42 : 1.0)
                 .opacity(pulse ? 1.0 : 0.5)
                 .animation(.easeIn(duration: 1.0).repeatForever(autoreverses: false), value: pulse)
-            Ellipse().fill(SS.hex(0x7C7468))
+            Ellipse().fill(SW.hex(0x7C7468))
                 .frame(width: 34, height: 23)
                 .offset(x: 62, y: -58)
                 .rotationEffect(.degrees(18))
@@ -370,8 +370,8 @@ struct OnboardStarsArt: View {
         HStack(spacing: 18) {
             ForEach(0..<3, id: \.self) { i in
                 StarShape()
-                    .fill(SS.gold)
-                    .overlay(StarShape().stroke(SS.goldDeep, lineWidth: 2))
+                    .fill(SW.gold)
+                    .overlay(StarShape().stroke(SW.goldDeep, lineWidth: 2))
                     .frame(width: i == 1 ? 74 : 54, height: i == 1 ? 74 : 54)
                     .offset(y: i == 1 ? -12 : 6)
             }

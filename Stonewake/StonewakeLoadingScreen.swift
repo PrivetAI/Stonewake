@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SkipStoneLoadingScreen: View {
+struct StonewakeLoadingScreen: View {
     @State private var ringScale: CGFloat = 0.4
     @State private var ringOpacity: Double = 0.9
     @State private var ringScale2: CGFloat = 0.4
@@ -9,7 +9,7 @@ struct SkipStoneLoadingScreen: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [SS.hex(0xFBE3CD), SS.hex(0xF3CBB0), SS.hex(0x9FC4C0)],
+                colors: [SW.hex(0xFBE3CD), SW.hex(0xF3CBB0), SW.hex(0x9FC4C0)],
                 startPoint: .top, endPoint: .bottom
             )
             .ignoresSafeArea()
@@ -25,7 +25,7 @@ struct SkipStoneLoadingScreen: View {
                         .frame(width: 150, height: 56)
                         .scaleEffect(ringScale2)
                     Ellipse()
-                        .fill(SS.hex(0x7C7468))
+                        .fill(SW.hex(0x7C7468))
                         .frame(width: 44, height: 30)
                         .overlay(
                             Ellipse()
@@ -36,13 +36,13 @@ struct SkipStoneLoadingScreen: View {
                 }
                 .frame(height: 120)
 
-                Text("Skip Stone Shore")
+                Text("Stonewake")
                     .font(.custom("Georgia-Bold", size: 28))
-                    .foregroundColor(SS.hex(0x3E3830))
+                    .foregroundColor(SW.hex(0x3E3830))
 
                 Text("Warming up the water...")
                     .font(.system(size: 15, weight: .medium, design: .rounded))
-                    .foregroundColor(SS.hex(0x3E3830).opacity(0.55))
+                    .foregroundColor(SW.hex(0x3E3830).opacity(0.55))
             }
         }
         .onAppear {

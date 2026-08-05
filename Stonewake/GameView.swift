@@ -60,17 +60,17 @@ final class GameVM: ObservableObject {
     init(mode: GameConfig, store: GameStore) {
         self.mode = mode
         self.store = store
-        self.dateKey = SSDaily.dateKey()
+        self.dateKey = SWDaily.dateKey()
         switch mode {
         case .level(let id):
             let spec = ShoreData.level(id: id) ?? ShoreData.allLevels[0]
             level = spec
             palette = ShorePalettes.forShore(spec.shore)
         case .zen:
-            level = SSZen.makeLevel(dayKey: SSDaily.dateKey())
+            level = SWZen.makeLevel(dayKey: SWDaily.dateKey())
             palette = ShorePalettes.zen
         case .daily:
-            level = SSDaily.makeLevel(for: SSDaily.dateKey())
+            level = SWDaily.makeLevel(for: SWDaily.dateKey())
             palette = ShorePalettes.daily
         }
         engine = ThrowEngine(level: level, stone: store.selectedStoneSpec, attemptIndex: 0)
@@ -243,7 +243,7 @@ final class GameVM: ObservableObject {
             newStars = store.recordLevelFinish(level: level, throwOutcomes: outcomes)
             starsAfter = store.stars(levelID: id)
         case .daily:
-            dailyScore = outcomes.map { SSDaily.score(for: $0) }.max() ?? 0
+            dailyScore = outcomes.map { SWDaily.score(for: $0) }.max() ?? 0
             store.recordDailyFinish(dateKey: dateKey, bestOutcome: bestOutcome, score: dailyScore)
         case .zen:
             break
@@ -348,7 +348,7 @@ struct GameContainer: View {
     /// including a Pro Max in landscape, which also reports regular width -
     /// keeps the shipped 150pt feel; only genuine iPad viewports stretch it.
     private func powerReference(_ size: CGSize) -> Double {
-        guard hSize == .regular else { return 150 }
+        guard SWLayout.isRegular(hSize) else { return 150 }
         return max(150, Double(min(size.width, size.height)) * 0.28)
     }
 
@@ -412,10 +412,10 @@ struct GameHUD: View {
 
                 VStack(spacing: 1) {
                     Text(String(format: "%.1f m", max(0, vm.engine.phase == .ready ? vm.bestDistance : vm.engine.x)))
-                        .font(SSFont.num(21 * s))
+                        .font(SWFont.num(21 * s))
                         .foregroundColor(.white)
                     Text("skips \(vm.engine.phase == .ready ? vm.bestSkips : vm.engine.outcome.skips)")
-                        .font(SSFont.body(12 * s, .semibold))
+                        .font(SWFont.body(12 * s, .semibold))
                         .foregroundColor(.white.opacity(0.8))
                 }
                 .padding(.horizontal, 14 * s)
@@ -449,17 +449,17 @@ struct GameHUD: View {
                 }
             }
             .padding(.horizontal, 14)
-            .ssRegularMaxWidth(SSLayout.hudWidth)
+            .ssRegularMaxWidth(SWLayout.hudWidth)
 
             GoalChips(vm: vm, scale: s)
                 .padding(.horizontal, 14)
-                .ssRegularMaxWidth(SSLayout.hudWidth)
+                .ssRegularMaxWidth(SWLayout.hudWidth)
 
             Spacer()
 
             if vm.phase == .playing {
                 Text(hintText)
-                    .font(SSFont.body(13 * s, .semibold))
+                    .font(SWFont.body(13 * s, .semibold))
                     .foregroundColor(.white.opacity(0.85))
                     .padding(.horizontal, 14 * s)
                     .padding(.vertical, 7 * s)
@@ -495,7 +495,7 @@ struct WindChip: View {
                 .frame(width: 14 * s, height: 14 * s)
                 .scaleEffect(x: wind >= 0 ? 1 : -1)
             Text(String(format: "%@%.1f", wind >= 0 ? "+" : "", wind))
-                .font(SSFont.num(11 * s))
+                .font(SWFont.num(11 * s))
                 .foregroundColor(.white)
         }
         .padding(.horizontal, 9 * s)
@@ -516,7 +516,7 @@ struct GoalChips: View {
                 HStack(spacing: 5) {
                     if met {
                         CheckShape()
-                            .stroke(SS.gold, style: StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
+                            .stroke(SW.gold, style: StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
                             .frame(width: 11 * s, height: 11 * s)
                     } else {
                         StarShape()
@@ -524,8 +524,8 @@ struct GoalChips: View {
                             .frame(width: 11 * s, height: 11 * s)
                     }
                     Text(shortGoal(vm.level.goals[i]))
-                        .font(SSFont.body(11 * s, .semibold))
-                        .foregroundColor(met ? SS.gold : .white.opacity(0.85))
+                        .font(SWFont.body(11 * s, .semibold))
+                        .foregroundColor(met ? SW.gold : .white.opacity(0.85))
                         .lineLimit(1)
                 }
                 .padding(.horizontal, 8 * s)
@@ -559,10 +559,10 @@ struct OverlayScrim<Content: View>: View {
             Color.black.opacity(0.45).ignoresSafeArea()
             content
                 .padding(22)
-                .frame(maxWidth: hSize == .regular ? SSLayout.overlayWidth : 420)
+                .frame(maxWidth: SWLayout.isRegular(hSize) ? SWLayout.overlayWidth : 420)
                 .background(
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
-                        .fill(SS.paper)
+                        .fill(SW.paper)
                         .shadow(color: .black.opacity(0.3), radius: 18, x: 0, y: 8)
                 )
                 .padding(.horizontal, 28)
@@ -578,11 +578,11 @@ struct ThrowEndOverlay: View {
         OverlayScrim {
             VStack(spacing: 14) {
                 Text(endTitle)
-                    .font(SSFont.display(24))
-                    .foregroundColor(SS.ink)
+                    .font(SWFont.display(24))
+                    .foregroundColor(SW.ink)
                 Text("Throw \(vm.outcomes.count) of \(vm.throwsAllowed)")
-                    .font(SSFont.body(13, .semibold))
-                    .foregroundColor(SS.inkSoft)
+                    .font(SWFont.body(13, .semibold))
+                    .foregroundColor(SW.inkSoft)
 
                 if let last = vm.outcomes.last {
                     HStack(spacing: 20) {
@@ -592,10 +592,10 @@ struct ThrowEndOverlay: View {
                     }
                 }
 
-                SSPrimaryButton(title: "Next Throw") { vm.nextThrow() }
+                SWPrimaryButton(title: "Next Throw") { vm.nextThrow() }
                 HStack(spacing: 10) {
-                    SSGhostButton(title: "Restart") { vm.restartLevel() }
-                    SSGhostButton(title: "Leave", color: SS.inkSoft) { onExit() }
+                    SWGhostButton(title: "Restart") { vm.restartLevel() }
+                    SWGhostButton(title: "Leave", color: SW.inkSoft) { onExit() }
                 }
             }
         }
@@ -620,8 +620,8 @@ struct ZenThrowOverlay: View {
         OverlayScrim {
             VStack(spacing: 14) {
                 Text("The Water Rests")
-                    .font(SSFont.display(24))
-                    .foregroundColor(SS.ink)
+                    .font(SWFont.display(24))
+                    .foregroundColor(SW.ink)
                 if let last = vm.outcomes.last {
                     HStack(spacing: 20) {
                         StatBlock(label: "distance", value: String(format: "%.1f m", last.distance))
@@ -629,16 +629,16 @@ struct ZenThrowOverlay: View {
                     }
                     VStack(spacing: 3) {
                         Text("personal best")
-                            .font(SSFont.body(11, .semibold))
-                            .foregroundColor(SS.inkSoft)
+                            .font(SWFont.body(11, .semibold))
+                            .foregroundColor(SW.inkSoft)
                         Text(String(format: "%.1f m  |  %d skips",
                                     vm.store.state.zenBestDistance, vm.store.state.zenBestSkips))
-                            .font(SSFont.num(15))
-                            .foregroundColor(SS.accent)
+                            .font(SWFont.num(15))
+                            .foregroundColor(SW.accent)
                     }
                 }
-                SSPrimaryButton(title: "Throw Again") { vm.zenAgain() }
-                SSGhostButton(title: "Back to Shore", color: SS.inkSoft) { onExit() }
+                SWPrimaryButton(title: "Throw Again") { vm.zenAgain() }
+                SWGhostButton(title: "Back to Shore", color: SW.inkSoft) { onExit() }
             }
         }
     }
@@ -655,29 +655,29 @@ struct LevelDoneOverlay: View {
         OverlayScrim {
             VStack(spacing: 14) {
                 Text(isDaily ? "Daily Throw Done" : vm.level.name)
-                    .font(SSFont.display(24))
-                    .foregroundColor(SS.ink)
+                    .font(SWFont.display(24))
+                    .foregroundColor(SW.ink)
                     .multilineTextAlignment(.center)
 
                 if isDaily {
                     VStack(spacing: 4) {
                         Text("score")
-                            .font(SSFont.body(12, .semibold))
-                            .foregroundColor(SS.inkSoft)
+                            .font(SWFont.body(12, .semibold))
+                            .foregroundColor(SW.inkSoft)
                         Text("\(vm.dailyScore)")
-                            .font(SSFont.num(34))
-                            .foregroundColor(SS.goldDeep)
+                            .font(SWFont.num(34))
+                            .foregroundColor(SW.goldDeep)
                         Text("streak \(store.state.dailyStreak) day\(store.state.dailyStreak == 1 ? "" : "s")")
-                            .font(SSFont.body(13, .semibold))
-                            .foregroundColor(SS.accent)
+                            .font(SWFont.body(13, .semibold))
+                            .foregroundColor(SW.accent)
                     }
                 } else {
                     HStack(spacing: 12) {
                         ForEach(0..<3, id: \.self) { i in
                             let lit = currentGoalsMet.indices.contains(i) && currentGoalsMet[i]
                             StarShape()
-                                .fill(lit ? SS.gold : SS.cardEdge)
-                                .overlay(StarShape().stroke(lit ? SS.goldDeep : SS.inkSoft.opacity(0.3), lineWidth: 1.5))
+                                .fill(lit ? SW.gold : SW.cardEdge)
+                                .overlay(StarShape().stroke(lit ? SW.goldDeep : SW.inkSoft.opacity(0.3), lineWidth: 1.5))
                                 .frame(width: 44, height: 44)
                                 .scaleEffect(starPop ? 1.0 : 0.4)
                                 .animation(.spring(response: 0.4, dampingFraction: 0.6).delay(Double(i) * 0.12), value: starPop)
@@ -689,16 +689,16 @@ struct LevelDoneOverlay: View {
                             HStack(spacing: 8) {
                                 if lit {
                                     CheckShape()
-                                        .stroke(SS.accent, style: StrokeStyle(lineWidth: 2.4, lineCap: .round, lineJoin: .round))
+                                        .stroke(SW.accent, style: StrokeStyle(lineWidth: 2.4, lineCap: .round, lineJoin: .round))
                                         .frame(width: 13, height: 13)
                                 } else {
                                     Circle()
-                                        .stroke(SS.inkSoft.opacity(0.4), lineWidth: 1.6)
+                                        .stroke(SW.inkSoft.opacity(0.4), lineWidth: 1.6)
                                         .frame(width: 13, height: 13)
                                 }
                                 Text(vm.level.goals[i].text)
-                                    .font(SSFont.body(13, lit ? .semibold : .regular))
-                                    .foregroundColor(lit ? SS.ink : SS.inkSoft)
+                                    .font(SWFont.body(13, lit ? .semibold : .regular))
+                                    .foregroundColor(lit ? SW.ink : SW.inkSoft)
                             }
                         }
                     }
@@ -710,11 +710,11 @@ struct LevelDoneOverlay: View {
                 }
 
                 if let next = vm.nextLevelID {
-                    SSPrimaryButton(title: "Next Level") { onNext(next) }
+                    SWPrimaryButton(title: "Next Level") { onNext(next) }
                 }
                 HStack(spacing: 10) {
-                    SSGhostButton(title: "Retry") { vm.restartLevel() }
-                    SSGhostButton(title: "Leave", color: SS.inkSoft) { onExit() }
+                    SWGhostButton(title: "Retry") { vm.restartLevel() }
+                    SWGhostButton(title: "Leave", color: SW.inkSoft) { onExit() }
                 }
             }
         }
@@ -743,11 +743,11 @@ struct PauseOverlay: View {
         OverlayScrim {
             VStack(spacing: 14) {
                 Text("Paused")
-                    .font(SSFont.display(26))
-                    .foregroundColor(SS.ink)
+                    .font(SWFont.display(26))
+                    .foregroundColor(SW.ink)
                 Text(vm.level.name)
-                    .font(SSFont.body(14, .medium))
-                    .foregroundColor(SS.inkSoft)
+                    .font(SWFont.body(14, .medium))
+                    .foregroundColor(SW.inkSoft)
 
                 HStack(spacing: 12) {
                     ToggleChip(label: "Sound", isOn: store.state.soundOn) {
@@ -762,12 +762,12 @@ struct PauseOverlay: View {
                     }
                 }
 
-                SSPrimaryButton(title: "Resume") { vm.phase = .playing }
+                SWPrimaryButton(title: "Resume") { vm.phase = .playing }
                 HStack(spacing: 10) {
-                    SSGhostButton(title: "Restart") {
+                    SWGhostButton(title: "Restart") {
                         vm.restartLevel()
                     }
-                    SSGhostButton(title: "Leave", color: SS.inkSoft) { onExit() }
+                    SWGhostButton(title: "Leave", color: SW.inkSoft) { onExit() }
                 }
             }
         }
@@ -782,15 +782,15 @@ struct ToggleChip: View {
         Button(action: action) {
             HStack(spacing: 6) {
                 Circle()
-                    .fill(isOn ? SS.accent : SS.cardEdge)
+                    .fill(isOn ? SW.accent : SW.cardEdge)
                     .frame(width: 10, height: 10)
                 Text(label)
-                    .font(SSFont.body(13, .semibold))
-                    .foregroundColor(isOn ? SS.ink : SS.inkSoft)
+                    .font(SWFont.body(13, .semibold))
+                    .foregroundColor(isOn ? SW.ink : SW.inkSoft)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(Capsule().stroke(isOn ? SS.accent.opacity(0.5) : SS.cardEdge, lineWidth: 1.4))
+            .background(Capsule().stroke(isOn ? SW.accent.opacity(0.5) : SW.cardEdge, lineWidth: 1.4))
         }
         .buttonStyle(PlainButtonStyle())
     }
@@ -802,11 +802,11 @@ struct StatBlock: View {
     var body: some View {
         VStack(spacing: 3) {
             Text(value)
-                .font(SSFont.num(17))
-                .foregroundColor(SS.ink)
+                .font(SWFont.num(17))
+                .foregroundColor(SW.ink)
             Text(label)
-                .font(SSFont.body(11, .medium))
-                .foregroundColor(SS.inkSoft)
+                .font(SWFont.body(11, .medium))
+                .foregroundColor(SW.inkSoft)
         }
     }
 }

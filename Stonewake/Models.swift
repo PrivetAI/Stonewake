@@ -219,7 +219,7 @@ func goalMet(_ goal: GoalSpec, by outcome: ThrowOutcome) -> Bool {
 
 // MARK: - Daily helpers
 
-enum SSDaily {
+enum SWDaily {
     static func dateKey(_ date: Date = Date()) -> String {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd"
@@ -302,10 +302,10 @@ enum SSDaily {
 
 // MARK: - Zen helpers
 
-enum SSZen {
+enum SWZen {
     /// Endless calm lake, re-seeded daily; pads and rings scattered far out.
     static func makeLevel(dayKey: String) -> LevelSpec {
-        var rng = SeededRNG(seed: SSDaily.seed(for: "zen-" + dayKey))
+        var rng = SeededRNG(seed: SWDaily.seed(for: "zen-" + dayKey))
         var waves: [WaveComponent] = []
         for _ in 0..<2 {
             waves.append(WaveComponent(amplitude: rng.range(0.03, 0.09),

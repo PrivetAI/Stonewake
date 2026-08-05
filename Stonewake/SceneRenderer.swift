@@ -270,7 +270,7 @@ struct LakeSceneView: View {
         var pole = Path()
         pole.move(to: CGPoint(x: fx, y: fy))
         pole.addLine(to: CGPoint(x: fx, y: fy - 34 * u))
-        c.stroke(pole, with: .color(SS.ink.opacity(0.7)), lineWidth: 2 * u)
+        c.stroke(pole, with: .color(SW.ink.opacity(0.7)), lineWidth: 2 * u)
         var flag = Path()
         let wave = CGFloat(sin(t * 2.1) * 3) * u
         flag.move(to: CGPoint(x: fx, y: fy - 34 * u))
@@ -291,7 +291,7 @@ struct LakeSceneView: View {
             let bob = collected ? 0 : sin(t * 1.2 + Double(i) * 2.2) * 0.06
             let py = sy(ring.height + bob)
             let r = ppm * CGFloat(ThrowEngine.ringRadius) * 0.82
-            let color = collected ? SS.gold.opacity(0.25) : SS.gold
+            let color = collected ? SW.gold.opacity(0.25) : SW.gold
             // stem to water
             var stem = Path()
             stem.move(to: CGPoint(x: px, y: py + r))
@@ -303,7 +303,7 @@ struct LakeSceneView: View {
             c.stroke(Path(ellipseIn: CGRect(x: px - r * 0.7, y: py - r * 0.7, width: r * 1.4, height: r * 1.4)),
                      with: .color(color.opacity(0.4)), lineWidth: 1.6 * u)
             if collected {
-                c.draw(Text("+1").font(.custom("Menlo-Bold", size: 11 * u)).foregroundColor(SS.gold),
+                c.draw(Text("+1").font(.custom("Menlo-Bold", size: 11 * u)).foregroundColor(SW.gold),
                        at: CGPoint(x: px, y: py - r - 10 * u))
             }
         }
@@ -317,7 +317,7 @@ struct LakeSceneView: View {
             let w = ppm * CGFloat(ThrowEngine.padRadius) * 2 * 0.9
             let h = w * 0.28
             let rect = CGRect(x: px - w / 2, y: py - h / 2, width: w, height: h)
-            c.fill(Path(ellipseIn: rect), with: .color(SS.padGreen))
+            c.fill(Path(ellipseIn: rect), with: .color(SW.padGreen))
             // notch
             var notch = Path()
             notch.move(to: CGPoint(x: px, y: py))
@@ -348,7 +348,7 @@ struct LakeSceneView: View {
             ctx.rotate(by: .radians(rock))
             // hull
             let hull = CGRect(x: -bodyW / 2, y: -bodyH * 0.55, width: bodyW, height: bodyH * 0.8)
-            ctx.fill(Path(ellipseIn: hull), with: .color(SS.danger))
+            ctx.fill(Path(ellipseIn: hull), with: .color(SW.danger))
             // stripe
             ctx.fill(Path(CGRect(x: -bodyW / 2, y: -bodyH * 0.28, width: bodyW, height: bodyH * 0.16)),
                      with: .color(Color.white.opacity(0.85)))
@@ -356,9 +356,9 @@ struct LakeSceneView: View {
             var mast = Path()
             mast.move(to: CGPoint(x: 0, y: -bodyH * 0.55))
             mast.addLine(to: CGPoint(x: 0, y: -bodyH * 0.86))
-            ctx.stroke(mast, with: .color(SS.ink.opacity(0.6)), lineWidth: 2 * u)
+            ctx.stroke(mast, with: .color(SW.ink.opacity(0.6)), lineWidth: 2 * u)
             ctx.fill(Path(ellipseIn: CGRect(x: -3 * u, y: -bodyH * 0.95, width: 6 * u, height: 6 * u)),
-                     with: .color(SS.gold))
+                     with: .color(SW.gold))
         }
     }
 
@@ -372,15 +372,15 @@ struct LakeSceneView: View {
             let botY = sy(surf - 0.25)
             let w = ppm * 0.55
             let rect = CGRect(x: px - w / 2, y: topY, width: w, height: botY - topY)
-            c.fill(Path(roundedRect: rect, cornerRadius: w * 0.4), with: .color(SS.hex(0x7A5738)))
+            c.fill(Path(roundedRect: rect, cornerRadius: w * 0.4), with: .color(SW.hex(0x7A5738)))
             c.fill(Path(roundedRect: CGRect(x: px - w / 2 + 2 * u, y: topY + 2 * u,
                                             width: w * 0.35, height: max(0, botY - topY - 4 * u)),
                         cornerRadius: w * 0.2),
-                   with: .color(SS.hex(0x9A744E).opacity(0.8)))
+                   with: .color(SW.hex(0x9A744E).opacity(0.8)))
             // knot
             c.fill(Path(ellipseIn: CGRect(x: px - 3 * u, y: topY + (botY - topY) * 0.3,
                                           width: 6 * u, height: 6 * u)),
-                   with: .color(SS.hex(0x5C3F26)))
+                   with: .color(SW.hex(0x5C3F26)))
         }
     }
 
@@ -447,7 +447,7 @@ struct LakeSceneView: View {
                 let r = (CGFloat(age) * 46 + 8) * u
                 let alpha = max(0, 0.7 - age * 1.5)
                 c.stroke(Path(ellipseIn: CGRect(x: px - r, y: py - r - 6 * u, width: r * 2, height: r * 2)),
-                         with: .color(SS.gold.opacity(alpha)), lineWidth: 2.4 * u)
+                         with: .color(SW.gold.opacity(alpha)), lineWidth: 2.4 * u)
             }
         }
     }
@@ -484,7 +484,7 @@ struct LakeSceneView: View {
         var arc2 = Path()
         arc2.addArc(center: CGPoint(x: cx, y: cy), radius: 30 * u,
                     startAngle: .degrees(0), endAngle: .degrees(-64 * aim.power), clockwise: true)
-        c.stroke(arc2, with: .color(SS.gold), style: StrokeStyle(lineWidth: 5 * u, lineCap: .round))
+        c.stroke(arc2, with: .color(SW.gold), style: StrokeStyle(lineWidth: 5 * u, lineCap: .round))
     }
 
     // MARK: - Stone
@@ -501,13 +501,13 @@ struct LakeSceneView: View {
         ctx.rotate(by: .radians(engine.rotation * 0.6))
         let body = StoneData.stone(id: engine.stone.id)
         ctx.fill(Path(ellipseIn: CGRect(x: -w / 2, y: -h / 2, width: w, height: h)),
-                 with: .color(SS.hex(body.bodyHex)))
+                 with: .color(SW.hex(body.bodyHex)))
         ctx.fill(Path(ellipseIn: CGRect(x: -w * 0.3, y: -h * 0.34, width: w * 0.42, height: h * 0.24)),
-                 with: .color(SS.hex(body.sheenHex).opacity(0.75)))
+                 with: .color(SW.hex(body.sheenHex).opacity(0.75)))
         ctx.fill(Path(ellipseIn: CGRect(x: w * 0.08, y: h * 0.06, width: w * 0.14, height: h * 0.14)),
-                 with: .color(SS.hex(body.speckHex).opacity(0.8)))
+                 with: .color(SW.hex(body.speckHex).opacity(0.8)))
         ctx.fill(Path(ellipseIn: CGRect(x: -w * 0.22, y: h * 0.12, width: w * 0.1, height: h * 0.1)),
-                 with: .color(SS.hex(body.speckHex).opacity(0.6)))
+                 with: .color(SW.hex(body.speckHex).opacity(0.6)))
 
         // Speed trail
         if engine.phase == .flying {
@@ -544,7 +544,7 @@ struct LakeSceneView: View {
         // Shrinking ring: tap when it meets the target
         let shrinkR = targetR + CGFloat(progress) * 46 * u
         let near = progress < 0.28
-        let ringColor = near ? SS.gold : Color.white.opacity(0.65)
+        let ringColor = near ? SW.gold : Color.white.opacity(0.65)
         c.stroke(Path(ellipseIn: CGRect(x: px - shrinkR, y: py - shrinkR,
                                         width: shrinkR * 2, height: shrinkR * 2)),
                  with: .color(ringColor), lineWidth: (near ? 3.4 : 2.2) * u)

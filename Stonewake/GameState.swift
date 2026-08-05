@@ -53,7 +53,7 @@ struct DailyRecord: Codable {
     }
 }
 
-struct SSPersist: Codable {
+struct SWPersist: Codable {
     var levelResults: [Int: LevelResult] = [:]
     var totalSkips: Int = 0
     var totalThrows: Int = 0
@@ -119,17 +119,17 @@ struct SSPersist: Codable {
 // MARK: - Store
 
 final class GameStore: ObservableObject {
-    static let saveKey = "sss.state.v1"
+    static let saveKey = "stonewake.state.v1"
 
-    @Published var state: SSPersist
+    @Published var state: SWPersist
     @Published var toastAchievements: [AchievementSpec] = []
 
     init() {
         if let data = UserDefaults.standard.data(forKey: GameStore.saveKey),
-           let decoded = try? JSONDecoder().decode(SSPersist.self, from: data) {
+           let decoded = try? JSONDecoder().decode(SWPersist.self, from: data) {
             state = decoded
         } else {
-            state = SSPersist()
+            state = SWPersist()
         }
     }
 
@@ -140,7 +140,7 @@ final class GameStore: ObservableObject {
     }
 
     func resetAll() {
-        state = SSPersist()
+        state = SWPersist()
         UserDefaults.standard.removeObject(forKey: GameStore.saveKey)
     }
 
@@ -251,7 +251,7 @@ final class GameStore: ObservableObject {
         } else {
             state.dailyRecords.append(DailyRecord(date: dateKey, score: score,
                                                   distance: bestOutcome.distance, skips: bestOutcome.skips))
-            if let prev = SSDaily.previousDayKey(of: dateKey), state.lastDailyDate == prev {
+            if let prev = SWDaily.previousDayKey(of: dateKey), state.lastDailyDate == prev {
                 state.dailyStreak += 1
             } else if state.lastDailyDate != dateKey {
                 state.dailyStreak = 1

@@ -231,7 +231,7 @@ struct WindIconShape: Shape {
 
 struct RingTargetIcon: View {
     let size: CGFloat
-    var color: Color = SS.gold
+    var color: Color = SW.gold
     var body: some View {
         ZStack {
             Circle().stroke(color, lineWidth: size * 0.12)
@@ -244,7 +244,7 @@ struct RingTargetIcon: View {
 
 struct LilyPadIcon: View {
     let size: CGFloat
-    var color: Color = SS.padGreen
+    var color: Color = SW.padGreen
     var body: some View {
         ZStack {
             Circle()
@@ -263,7 +263,7 @@ struct LilyPadIcon: View {
 
 struct BuoyIcon: View {
     let size: CGFloat
-    var color: Color = SS.danger
+    var color: Color = SW.danger
     var body: some View {
         VStack(spacing: 0) {
             Capsule().fill(color)
@@ -282,7 +282,7 @@ struct BuoyIcon: View {
 
 struct DriftwoodIcon: View {
     let size: CGFloat
-    var color: Color = SS.hex(0x8A6444)
+    var color: Color = SW.hex(0x8A6444)
     var body: some View {
         ZStack {
             Capsule().fill(color)
@@ -314,7 +314,7 @@ struct StoneMiniIcon: View {
 
 struct TrophyIcon: View {
     let size: CGFloat
-    var color: Color = SS.gold
+    var color: Color = SW.gold
     var body: some View {
         VStack(spacing: size * 0.03) {
             ZStack {
@@ -348,7 +348,7 @@ struct UnevenCupShape: Shape {
 
 struct HandDragIcon: View {
     let size: CGFloat
-    var color: Color = SS.ink
+    var color: Color = SW.ink
     var body: some View {
         ZStack {
             Circle()
@@ -525,7 +525,7 @@ struct FlagIcon: View {
 
 struct ThrowArcIcon: View {
     let size: CGFloat
-    var color: Color = SS.accent
+    var color: Color = SW.accent
     var body: some View {
         ZStack {
             Path { p in
@@ -546,7 +546,7 @@ struct ThrowArcIcon: View {
 
 struct BeatIcon: View {
     let size: CGFloat
-    var color: Color = SS.accent
+    var color: Color = SW.accent
     var body: some View {
         ZStack {
             Circle().stroke(color.opacity(0.4), lineWidth: size * 0.06)
@@ -562,7 +562,7 @@ struct BeatIcon: View {
 
 struct SpinIcon: View {
     let size: CGFloat
-    var color: Color = SS.accent
+    var color: Color = SW.accent
     var body: some View {
         ZStack {
             ForEach(0..<2, id: \.self) { i in

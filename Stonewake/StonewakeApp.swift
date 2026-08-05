@@ -1,67 +1,67 @@
 import SwiftUI
 
 @main
-struct SkipStoneShoreApp: App {
-    @State private var skipStoneLinkReady: Bool? = nil
-    private let skipStoneSourceLink = "https://example.com"
-    private let skipStoneCheckDomain = "example"
+struct StonewakeApp: App {
+    @State private var stonewakeLinkReady: Bool? = nil
+    private let stonewakeSourceLink = "https://example.com"
+    private let stonewakeCheckDomain = "example"
 
     var body: some Scene {
         WindowGroup {
             Group {
-                if let ready = skipStoneLinkReady {
+                if let ready = stonewakeLinkReady {
                     if ready {
-                        SkipStoneWebPanel(urlString: skipStoneSourceLink)
+                        StonewakeWebPanel(urlString: stonewakeSourceLink)
                             .edgesIgnoringSafeArea(.bottom)
                             .background(Color.black.ignoresSafeArea())
                     } else {
                         RootView()
                     }
                 } else {
-                    SkipStoneLoadingScreen()
-                        .onAppear { checkSkipStoneLink() }
+                    StonewakeLoadingScreen()
+                        .onAppear { checkStonewakeLink() }
                 }
             }
             .preferredColorScheme(.light)
         }
     }
 
-    private func checkSkipStoneLink() {
-        guard let url = URL(string: skipStoneSourceLink) else {
-            skipStoneLinkReady = false
+    private func checkStonewakeLink() {
+        guard let url = URL(string: stonewakeSourceLink) else {
+            stonewakeLinkReady = false
             return
         }
         var request = URLRequest(url: url)
         request.timeoutInterval = 5
-        let tracker = SkipStoneRedirectTracker(checkDomain: skipStoneCheckDomain)
+        let tracker = StonewakeRedirectTracker(checkDomain: stonewakeCheckDomain)
         let session = URLSession(configuration: .default, delegate: tracker, delegateQueue: nil)
         session.dataTask(with: request) { _, response, error in
             DispatchQueue.main.async {
                 if tracker.foundCheckDomain {
-                    skipStoneLinkReady = false; return
+                    stonewakeLinkReady = false; return
                 }
                 if let finalURL = tracker.resolvedURL?.absoluteString,
-                   finalURL.contains(self.skipStoneCheckDomain) {
-                    skipStoneLinkReady = false; return
+                   finalURL.contains(self.stonewakeCheckDomain) {
+                    stonewakeLinkReady = false; return
                 }
                 if let httpResp = response as? HTTPURLResponse,
                    let respURL = httpResp.url?.absoluteString,
-                   respURL.contains(self.skipStoneCheckDomain) {
-                    skipStoneLinkReady = false; return
+                   respURL.contains(self.stonewakeCheckDomain) {
+                    stonewakeLinkReady = false; return
                 }
                 if error != nil {
-                    skipStoneLinkReady = false; return
+                    stonewakeLinkReady = false; return
                 }
-                skipStoneLinkReady = true
+                stonewakeLinkReady = true
             }
         }.resume()
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            if skipStoneLinkReady == nil { skipStoneLinkReady = false }
+            if stonewakeLinkReady == nil { stonewakeLinkReady = false }
         }
     }
 }
 
-final class SkipStoneRedirectTracker: NSObject, URLSessionTaskDelegate {
+final class StonewakeRedirectTracker: NSObject, URLSessionTaskDelegate {
     var resolvedURL: URL?
     var foundCheckDomain = false
     private let checkDomain: String

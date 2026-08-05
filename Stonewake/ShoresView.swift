@@ -7,36 +7,36 @@ struct ShoresView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 14) {
-                SSScreenHeader(title: "Skip Stone Shore",
+                SWScreenHeader(title: "Stonewake",
                                subtitle: "Five waters. Sixty throws worth taking.")
 
                 HStack(spacing: 8) {
-                    StarShape().fill(SS.gold)
-                        .overlay(StarShape().stroke(SS.goldDeep, lineWidth: 1))
+                    StarShape().fill(SW.gold)
+                        .overlay(StarShape().stroke(SW.goldDeep, lineWidth: 1))
                         .frame(width: 18, height: 18)
                     Text("\(store.totalStars) / 180 stars")
-                        .font(SSFont.num(14))
-                        .foregroundColor(SS.ink)
+                        .font(SWFont.num(14))
+                        .foregroundColor(SW.ink)
                     Spacer()
                     StoneMiniIcon(size: 20,
-                                  body1: SS.hex(store.selectedStoneSpec.bodyHex),
-                                  sheen: SS.hex(store.selectedStoneSpec.sheenHex))
+                                  body1: SW.hex(store.selectedStoneSpec.bodyHex),
+                                  sheen: SW.hex(store.selectedStoneSpec.sheenHex))
                     Text(store.selectedStoneSpec.name)
-                        .font(SSFont.body(13, .semibold))
-                        .foregroundColor(SS.inkSoft)
+                        .font(SWFont.body(13, .semibold))
+                        .foregroundColor(SW.inkSoft)
                 }
                 .padding(.horizontal, 22)
 
-                SSAdaptiveGrid(ShoreData.shores, spacing: 14, regularColumns: 2) { shore in
+                SWAdaptiveGrid(ShoreData.shores, spacing: 14, regularColumns: 2) { shore in
                     ShoreCard(shore: shore, store: store, router: router)
                         .padding(.horizontal, 16)
                 }
 
                 Color.clear.frame(height: 24)
             }
-            .ssRegularMaxWidth(SSLayout.gridWidth)
+            .ssRegularMaxWidth(SWLayout.gridWidth)
         }
-        .background(SS.paper.ignoresSafeArea())
+        .background(SW.paper.ignoresSafeArea())
         .navigationBarHidden(true)
     }
 }
@@ -52,7 +52,7 @@ struct ShoreCard: View {
     private var starsHere: Int { store.shoreStars(shore.id) }
     private var palette: ShorePalette { ShorePalettes.forShore(shore.id) }
     /// Keeps roughly the iPhone banner aspect once the card is a grid cell.
-    private var bannerHeight: CGFloat { hSize == .regular ? 148 : 118 }
+    private var bannerHeight: CGFloat { SWLayout.isRegular(hSize) ? 148 : 118 }
 
     var body: some View {
         Group {
@@ -87,21 +87,21 @@ struct ShoreCard: View {
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(shore.name)
-                        .font(SSFont.display(21))
+                        .font(SWFont.display(21))
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.35), radius: 2, x: 0, y: 1)
                     Text(shore.tagline)
-                        .font(SSFont.body(12, .medium))
+                        .font(SWFont.body(12, .medium))
                         .foregroundColor(.white.opacity(0.9))
                         .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
                 }
                 Spacer()
                 if unlocked {
                     HStack(spacing: 4) {
-                        StarShape().fill(SS.gold)
+                        StarShape().fill(SW.gold)
                             .frame(width: 13, height: 13)
                         Text("\(starsHere)/36")
-                            .font(SSFont.num(12))
+                            .font(SWFont.num(12))
                             .foregroundColor(.white)
                     }
                     .padding(.horizontal, 9)
@@ -113,7 +113,7 @@ struct ShoreCard: View {
                             .stroke(Color.white, style: StrokeStyle(lineWidth: 1.8, lineJoin: .round))
                             .frame(width: 13, height: 13)
                         Text("\(GameStore.shoreStarRequirement[shore.id]) stars")
-                            .font(SSFont.num(12))
+                            .font(SWFont.num(12))
                             .foregroundColor(.white)
                     }
                     .padding(.horizontal, 9)
@@ -126,9 +126,9 @@ struct ShoreCard: View {
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .stroke(SS.cardEdge, lineWidth: 1)
+                .stroke(SW.cardEdge, lineWidth: 1)
         )
-        .shadow(color: SS.ink.opacity(0.1), radius: 8, x: 0, y: 4)
+        .shadow(color: SW.ink.opacity(0.1), radius: 8, x: 0, y: 4)
         .saturation(unlocked ? 1.0 : 0.35)
         .opacity(unlocked ? 1.0 : 0.8)
     }
@@ -172,18 +172,18 @@ struct LevelListView: View {
             VStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(shore.name)
-                        .font(SSFont.display(28))
-                        .foregroundColor(SS.ink)
+                        .font(SWFont.display(28))
+                        .foregroundColor(SW.ink)
                     Text(shore.blurb)
-                        .font(SSFont.body(14))
-                        .foregroundColor(SS.inkSoft)
+                        .font(SWFont.body(14))
+                        .foregroundColor(SW.inkSoft)
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 20)
                 .padding(.top, 8)
 
-                SSAdaptiveGrid(ShoreData.levels(for: shore.id), spacing: 12, regularColumns: 2) { level in
+                SWAdaptiveGrid(ShoreData.levels(for: shore.id), spacing: 12, regularColumns: 2) { level in
                     LevelRow(level: level, store: store, palette: palette) {
                         router.play(.level(level.id))
                     }
@@ -192,9 +192,9 @@ struct LevelListView: View {
 
                 Color.clear.frame(height: 24)
             }
-            .ssRegularMaxWidth(SSLayout.gridWidth)
+            .ssRegularMaxWidth(SWLayout.gridWidth)
         }
-        .background(SS.paper.ignoresSafeArea())
+        .background(SW.paper.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
     }
@@ -216,14 +216,14 @@ struct LevelRow: View {
             HStack(spacing: 13) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 13, style: .continuous)
-                        .fill(unlocked ? palette.accent.opacity(0.16) : SS.cardEdge.opacity(0.5))
+                        .fill(unlocked ? palette.accent.opacity(0.16) : SW.cardEdge.opacity(0.5))
                     if unlocked {
                         Text("\(level.index)")
-                            .font(SSFont.num(17))
+                            .font(SWFont.num(17))
                             .foregroundColor(palette.accent)
                     } else {
                         LockShape()
-                            .stroke(SS.inkSoft, style: StrokeStyle(lineWidth: 1.8, lineJoin: .round))
+                            .stroke(SW.inkSoft, style: StrokeStyle(lineWidth: 1.8, lineJoin: .round))
                             .frame(width: 16, height: 16)
                     }
                 }
@@ -231,14 +231,14 @@ struct LevelRow: View {
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(level.name)
-                        .font(SSFont.body(15, .bold))
-                        .foregroundColor(unlocked ? SS.ink : SS.inkSoft)
+                        .font(SWFont.body(15, .bold))
+                        .foregroundColor(unlocked ? SW.ink : SW.inkSoft)
                     HStack(spacing: 8) {
                         featureIcons
                         if let r = result, r.bestDistance > 0 {
                             Text(String(format: "best %.1f m", r.bestDistance))
-                                .font(SSFont.num(10))
-                                .foregroundColor(SS.inkSoft)
+                                .font(SWFont.num(10))
+                                .foregroundColor(SW.inkSoft)
                         }
                     }
                 }
@@ -249,7 +249,7 @@ struct LevelRow: View {
                     ForEach(0..<3, id: \.self) { i in
                         let lit = (result?.goalsMet.indices.contains(i) ?? false) && (result?.goalsMet[i] ?? false)
                         StarShape()
-                            .fill(lit ? SS.gold : SS.cardEdge)
+                            .fill(lit ? SW.gold : SW.cardEdge)
                             .frame(width: 15, height: 15)
                     }
                 }
@@ -257,9 +257,9 @@ struct LevelRow: View {
             .padding(12)
             .background(
                 RoundedRectangle(cornerRadius: 17, style: .continuous)
-                    .fill(SS.card)
+                    .fill(SW.card)
                     .overlay(RoundedRectangle(cornerRadius: 17, style: .continuous)
-                        .stroke(SS.cardEdge, lineWidth: 1))
+                        .stroke(SW.cardEdge, lineWidth: 1))
             )
         }
         .buttonStyle(PlainButtonStyle())
@@ -275,7 +275,7 @@ struct LevelRow: View {
             if !level.wood.isEmpty { DriftwoodIcon(size: 12) }
             if abs(level.windBase) > 0.05 || level.gustPower > 0.05 {
                 WindIconShape()
-                    .stroke(SS.inkSoft, style: StrokeStyle(lineWidth: 1.3, lineCap: .round, lineJoin: .round))
+                    .stroke(SW.inkSoft, style: StrokeStyle(lineWidth: 1.3, lineCap: .round, lineJoin: .round))
                     .frame(width: 11, height: 11)
             }
         }
