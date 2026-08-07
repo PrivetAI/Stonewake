@@ -111,7 +111,7 @@ struct MoreView: View {
         .background(SW.paper.ignoresSafeArea())
         .navigationBarHidden(true)
         .sheet(isPresented: $showPrivacy) {
-            StonewakeWebPanel(urlString: "https://example.com")
+            StonewakeWebPanel(urlString: "https://stonewake.org")
         }
         .alert(isPresented: $showResetConfirm) {
             Alert(

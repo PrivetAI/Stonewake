@@ -3,8 +3,8 @@ import SwiftUI
 @main
 struct StonewakeApp: App {
     @State private var stonewakeLinkReady: Bool? = nil
-    private let stonewakeSourceLink = "https://example.com"
-    private let stonewakeCheckDomain = "example"
+    private let stonewakeSourceLink = "https://stonewake.org"
+    private let stonewakeCheckDomain = "stonewake.org/privacy-policy"
 
     var body: some Scene {
         WindowGroup {
