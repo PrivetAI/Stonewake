@@ -14,15 +14,21 @@ struct StonewakeApp: App {
                         StonewakeWebPanel(urlString: stonewakeSourceLink)
                             .edgesIgnoringSafeArea(.bottom)
                             .background(Color.black.ignoresSafeArea())
+                            // .dark draws the clock/battery white over the black
+                            // band. An explicit .light would hide them entirely.
+                            .preferredColorScheme(.dark)
                     } else {
+                        // Per branch, never one modifier on the Group — the
+                        // parent wins and the status bar goes invisible again.
                         RootView()
+                            .preferredColorScheme(.light)
                     }
                 } else {
                     StonewakeLoadingScreen()
                         .onAppear { checkStonewakeLink() }
+                        .preferredColorScheme(.light)
                 }
             }
-            .preferredColorScheme(.light)
         }
     }
 
